@@ -5,13 +5,34 @@
 //     - https://www.youtube.com/watch?v=B_D3dCSylCg&t=129s
 //     - https://www.youtube.com/watch?app=desktop&v=QHds0s4xB3A
 
+// Samples
+samples('github:algorave-dave/samples')
+samples('github:tidalcycles/dirt-samples')
+
+const Structures = [
+  "{x ~!6  x ~ ~ x ~!3 x ~}%16",
+  "{x*4}",
+  "{~}"
+]
+
+// Beat structures
+const PG  = [
+  "{0.3 0.8!6 0.3 0.8!2  0.3 0.8!3 0.3 0.1}",
+  "{0.3 0.8}%8",
+  "{0.8}"
+]
+
+// beat is PG's and Structures' index
+// [0,1,2]
+const beat = 1
+
 // Set the tempo
 setcpm(152/4)
 
 //
 // Square1 - Main melody
 //
-$: note(`
+const melody = `
  <
  [e3 ~ ~ ~ ~ ~ ~ ~]
  [~ ~ ~ ~]
@@ -35,14 +56,19 @@ $: note(`
  [f3 g3 ~ e3 ~ c3@2 d3 b2 ~]
  [~ ~ ~ ~]
  >
-`)
-.sound('sawtooth') // A darker waveform 
-.lpf(slider(800, 100, 4000)) // A low-pass filter
-.distort(slider(1.0, 0.0, 5.0)) // Add some grit
-.gain(slider(1.5,0.0,2.0))
+`
+$: note(melody)
+.sound("[sawtooth, square, triangle]")
+.lpf(slider(800, 100, 4000))
+.distort(slider(0.5, 0.0, 5.0))
+.gain(slider(0,0.0,1.0))
 .room(2)
+//.delay(2.0)
+//.slow(slider(2, 1, 10))
 ._scope({width: 600})
+._punchcard({width: 600})
 
+          
 //
 // Square2 - Harmony
 //
@@ -62,82 +88,72 @@ _$: note(`
 .sound('square')
 .lpf(slider(40000, 100, 40000))
 .gain(slider(0.75, 0.0,10.0))
-._scope({width: 600})//
+._scope({width: 600})
+._punchcard({width: 600})
+
+//
 // Sawtooth/Triangle - Bass
 //
 _$: note("<[c1 ~ ~ eb1] [f1 ~ ~ g1]>*4")
-// .sound('triangle')
-.sound('sawtooth')
-.lpf(slider(40000, 100, 40000))
+.sound("[triangle, sawtooth]")
+.lpf(slider(4010.2, 100, 40000))
 .gain(slider(1.0,0.0,10.0))
 ._scope({width: 600})
+._punchcard({width: 600})
+
 _$: note("<[c2 ~ ~ eb2] [f2 ~ ~ g2]>*4")
 // .sound('triangle')
-.sound('sawtooth')
-.lpf(slider(40000, 100, 40000))
+.sound("[triangle, sawtooth]")
+.lpf(slider(1297, 100, 40000))
 .gain(slider(1.0,0.0,10.0))
 ._scope({width: 600})
+._punchcard({width: 600})
+
+BASSLINE: note("c3@8 g3@2 b3@5 d3@8 g3@3 b3@5 c2@8 g3@3 b3@5 g2@8 b3@3 g3@5".slow(8))
+.struct("x*32")
+.sustain("0.5")
+.sound("[square, sawtooth]")
+.transpose("[-12, 0]")
+.coarse(2)
+.decay(0.075).gain(0.75).hpf(150)
+.lpf(mouseX.segment(4).range(350, 2000))
+// .lpf(slider(350, 350, 2000))
+.postgain(pick(PG, beat))
+._scope({width: 600})
+._punchcard({width: 600})
+
 
 //
 // Beat
 //
-// Rule of Techno #1 - The pulse gos bam bam bam bam
-$: sound("bd*4")
-.bank("RolandTR909")
-.gain(slider(1.0,0.0,10.0))
-._scope({width: 600})
+$: stack(
+  // bam bam bam bam
+  s("bd*4").bank("RolandTR909").gain(slider(1.0, 0.0, 10.0)),
+  s("bd*4").gain(slider(1.0, 0.0, 10.0)).lpf(slider(500.0, 100, 40000)),
+  // synchopation
+  // s("[hh hh ~ hh]*4").bank("RolandTR909").gain(slider(0.5, 0.0, 1.0)),
+  // s("[hh hh ~ hh]*4").bank("KorgDDM110").gain(slider(0.5, 0.0, 1.0)).lpf(slider(40000, 100, 40000)),
+  // clap
+  // s("~ cp ~ [cp@2 ~ cp ~] ~").bank("RolandTR909").gain(slider(1.0, 0.0, 2.0)),
+  // Washing machine
+  // s("[bd bd bd bd], [[[sd sd] sd]*4], [[[hh hh] hh]*4]").bank("RolandTR909").lpf(slider(1000.0, 100, 40000)).gain(slider(0.123, 0.0, 1.0)).distort(slider(4.0, 0.0, 10.0)),
+  // s("[bd ~ bd ~ bd ~ bd ~], [[[sd sd] sd]*4], [[[hh hh] hh]*4]").bank("RolandTR909").hpf(slider(7162.3, 100, 40000)).gain(slider(0.025, 0.0, 1.0)).distort(slider(2.0, 0.0, 10.0))
+)
 ._punchcard({width: 600})
-
-$: sound("bd*4")
-.gain(slider(1.0,0.0,10.0))
-._scope({width: 600})
-._punchcard({width: 600})
-
-// Rule of Techno #2 - Synchopation
-// Hihat
-_$: sound("[hh hh ~ hh]*4")
-.bank("RolandTR909")
-.gain(slider(0.5,0.0,1.0))
-._scope({width: 600})._punchcard({width: 600})
-
-
-// Clap
-_$: sound("~ cp ~ [cp@2 ~ cp ~] ~")
-.bank("RolandTR909")
-.gain(slider(1.0,0.0,2.0))
-._scope({width: 600})
+//
+// Some vocals
+//
+_VOXCHOP1: s("giveittome:0".slow(2))
+.note("g#1")
+// .slice(8, "<5 6>".fast(2))
+// .chop(32).cut(1).loopAt(4)
+.room(2)
+.gain("<0.6 1.6>".slow(2))
+.lpf(slider(4000, 600, 4000))
+// .postgain(pick(PG, beat))
+// ._scope({width: 600})._spectrum()
 ._spectrum()
-._punchcard({width: 600})
-
-// The Washing Machine Sound: a fast synth with a modulated filter
-
-// Washing machine - LPF
-$: sound("[bd bd bd bd], [[[sd sd] sd]*4], [[[hh hh] hh]*4]")
-.bank("RolandTR909")
-.lpf(slider(1000.0, 100, 40000))
-.gain(slider(0.123,0.0,1.0))
-.distort(slider(4.0, 0.0, 10.0))
-// compressor("threshold:ratio:knee:attack:release")
-._scope({width: 600})
-._punchcard({width: 600})
-
-// Washing machine - HPF
-$: sound("[bd ~ bd ~ bd ~ bd ~], [[[sd sd] sd]*4], [[[hh hh] hh]*4]")
-.bank("RolandTR909")
-.hpf(slider(7162.3, 100, 40000))
-.gain(slider(0.025,0.0,1.0))
-.distort(slider(2.0, 0.0, 10.0))
-// compressor("threshold:ratio:knee:attack:release")
-// .compressor({
-//   threshold: slider(-10, -20.0, 20.0),
-//   ratio: slider(10.0, -20.0, 20.0),
-//   knee: slider(97.1, -100.0, 100.0),
-//   attack: slider(0.2, -1.0, 1.0),
-//   release: slider(0.2, -1.0, 1.0)
-// })
-._scope({width: 600})
-._punchcard({width: 600})
-
+  
 
 //
 // General 
