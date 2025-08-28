@@ -1,0 +1,147 @@
+// FamiCom/NES - SMB Main Theme - Hard/Industrial/Dark techno?
+//     @fjpolo
+//
+// References:
+//     - https://www.youtube.com/watch?v=B_D3dCSylCg&t=129s
+//     - https://www.youtube.com/watch?app=desktop&v=QHds0s4xB3A
+
+// Set the tempo
+setcpm(152/4)
+
+//
+// Square1 - Main melody
+//
+$: note(`
+ <
+ [e3 ~ ~ ~ ~ ~ ~ ~]
+ [~ ~ ~ ~]
+ [e3 e3 ~ ~ ~ ~ ~ ~]
+ [~ ~ ~ ~]
+ [e3 e3 ~ e3 ~ ~ ~ ~]
+ [~ ~ ~ ~]
+ [e3 e3 ~ e3 ~ c3 ~ ~]
+ [~ ~ ~ ~]
+ [e3 e3 ~ e3 ~ c3 e3 ~]
+ [~ ~ ~ ~]
+ [e3 e3 ~ e3 ~ c3 e3 ~]
+ [g3 ~ ~ ~ g2 ~ ~ ~]
+ [~ ~ ~ ~]
+ [c3@3 ~ g2 ~ e2 ~ a2 b2 ~]
+ [as2 a2 ~ g2 e3 g3 a3 ~]
+ [f3 g3 ~ e3 ~ c3@2 d3 b2 ~]
+ [~ ~ ~ ~]
+ [c3@3 ~ g2 ~ e2 ~ a2 b2 ~]
+ [as2 a2 ~ g2 e3 g3 a3 ~]
+ [f3 g3 ~ e3 ~ c3@2 d3 b2 ~]
+ [~ ~ ~ ~]
+ >
+`)
+.sound('sawtooth') // A darker waveform 
+.lpf(slider(800, 100, 4000)) // A low-pass filter
+.distort(slider(1.0, 0.0, 5.0)) // Add some grit
+.gain(slider(1.5,0.0,2.0))
+.room(2)
+._scope({width: 600})
+
+//
+// Square2 - Harmony
+//
+_$: note(`
+  <
+  [c3 ~ c3 ~ c3 ~ c3 ~]
+  [g2 ~ g2 ~ g2 ~ g2 ~]
+  [c3 ~ c3 ~ g2 ~ g2 ~]
+  [c3 ~ c3 ~ c3 ~ c3 ~]
+  [f3 ~ f3 ~ c3 ~ c3 ~]
+  [b2 ~ b2 ~ g2 ~ g2 ~]
+  [c3 ~ c3 ~ g2 ~ g2 ~]
+  [c3 ~ c3 ~ c3 ~ c3 ~]
+  [g2 ~ g2 ~ g2 ~ g2 ~]
+  >
+`)
+.sound('square')
+.lpf(slider(40000, 100, 40000))
+.gain(slider(0.75, 0.0,10.0))
+._scope({width: 600})//
+// Sawtooth/Triangle - Bass
+//
+_$: note("<[c1 ~ ~ eb1] [f1 ~ ~ g1]>*4")
+// .sound('triangle')
+.sound('sawtooth')
+.lpf(slider(40000, 100, 40000))
+.gain(slider(1.0,0.0,10.0))
+._scope({width: 600})
+_$: note("<[c2 ~ ~ eb2] [f2 ~ ~ g2]>*4")
+// .sound('triangle')
+.sound('sawtooth')
+.lpf(slider(40000, 100, 40000))
+.gain(slider(1.0,0.0,10.0))
+._scope({width: 600})
+
+//
+// Beat
+//
+// Rule of Techno #1 - The pulse gos bam bam bam bam
+$: sound("bd*4")
+.bank("RolandTR909")
+.gain(slider(1.0,0.0,10.0))
+._scope({width: 600})
+._punchcard({width: 600})
+
+$: sound("bd*4")
+.gain(slider(1.0,0.0,10.0))
+._scope({width: 600})
+._punchcard({width: 600})
+
+// Rule of Techno #2 - Synchopation
+// Hihat
+_$: sound("[hh hh ~ hh]*4")
+.bank("RolandTR909")
+.gain(slider(0.5,0.0,1.0))
+._scope({width: 600})._punchcard({width: 600})
+
+
+// Clap
+_$: sound("~ cp ~ [cp@2 ~ cp ~] ~")
+.bank("RolandTR909")
+.gain(slider(1.0,0.0,2.0))
+._scope({width: 600})
+._spectrum()
+._punchcard({width: 600})
+
+// The Washing Machine Sound: a fast synth with a modulated filter
+
+// Washing machine - LPF
+$: sound("[bd bd bd bd], [[[sd sd] sd]*4], [[[hh hh] hh]*4]")
+.bank("RolandTR909")
+.lpf(slider(1000.0, 100, 40000))
+.gain(slider(0.123,0.0,1.0))
+.distort(slider(4.0, 0.0, 10.0))
+// compressor("threshold:ratio:knee:attack:release")
+._scope({width: 600})
+._punchcard({width: 600})
+
+// Washing machine - HPF
+$: sound("[bd ~ bd ~ bd ~ bd ~], [[[sd sd] sd]*4], [[[hh hh] hh]*4]")
+.bank("RolandTR909")
+.hpf(slider(7162.3, 100, 40000))
+.gain(slider(0.025,0.0,1.0))
+.distort(slider(2.0, 0.0, 10.0))
+// compressor("threshold:ratio:knee:attack:release")
+// .compressor({
+//   threshold: slider(-10, -20.0, 20.0),
+//   ratio: slider(10.0, -20.0, 20.0),
+//   knee: slider(97.1, -100.0, 100.0),
+//   attack: slider(0.2, -1.0, 1.0),
+//   release: slider(0.2, -1.0, 1.0)
+// })
+._scope({width: 600})
+._punchcard({width: 600})
+
+
+//
+// General 
+//
+  
+// Theme
+.theme("bluescreen")
