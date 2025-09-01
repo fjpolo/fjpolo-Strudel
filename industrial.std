@@ -1,0 +1,120 @@
+//     @fjpolo
+//
+// - https://setaocmass.bandcamp.com/album/sample-pack-vol-1
+// - https://www.freetousesounds.com/
+
+
+// Set the tempo
+setCps(152/60/4)
+
+samples('github:algorave-dave/samples')
+samples('github:tidalcycles/dirt-samples')
+
+const Structures = [
+  "{x ~!6  x ~ ~ x ~!3 x ~}%16",
+  "{x*4}",
+  "{~}"
+]
+
+// Beat structures
+const PG  = [
+  "{0.3 0.8!6 0.3 0.8!2  0.3 0.8!3 0.3 0.1}",
+  "{0.3 0.8}%8",
+  "{0.8}"
+]
+
+// [0,1,2]
+const beat = 2 // beat is PG' index
+
+//
+// Drum machine
+//
+DRUM: stack(
+
+  // -- Kick --
+  stack(
+    s("[bd!4]"),
+    stack(
+      // -- Rumble - Low
+      s("[bd!4]")
+      .lpf(slider(500, 10, 20000))
+      .gain(slider(1.2, 0.1, 10.0))
+      ,
+      // -- Rumble - Low
+      s("[bd!4]")
+      .distort(slider(10.0, 0.1, 12.0))
+      .hpf(1200).gain(slider(0.01, 0.001, 1.0))
+    )
+    .delay(slider(1.0, 0.1, 10.0))
+    .room(slider(0.1, 0.0, 10.0))
+    ,
+  )
+  .lpf(850),
+                                        
+  // -- Foley
+  stack(
+    s("battles:000_expl01")
+    .gain(2.0),
+    // s("industrial:003_04")
+    // .struct("[~ 1 1 1]")
+    // ,
+    s("battles:000_explo1")
+    .struct("[~ 1 1 1]")
+    .gain(1.25)
+  )
+  ,
+
+  // -- Hihat
+  stack(
+    // -- Uphat
+    s("[~ hh]!4").gain(4.0),
+    // -- Rolling hihat
+    s("[hh]").struct("x*8")
+  ).gain(2.0).bank("RolandTR909")
+)
+._punchcard({width: 600})
+
+
+
+
+
+
+
+
+
+
+
+
+//
+// Hit that Bass
+//
+_BASSLINE: note("f#3@8 c#3@2 d3@5 a3@8 c#3@3 d3@5 f#2@8 c#3@3 d3@5 d2@8 d3@3 c#3@5".slow(8))
+.struct("x*32")
+.sustain("0.5")
+.sound("[square, sawtooth]")
+.transpose("[-12, 0]")
+.coarse(2)
+.decay(0.075).gain(0.75).hpf(150)
+.lpf(mouseX.segment(4).range(350, 2000))
+// .lpf(slider(350, 350, 2000))
+.postgain(pick(PG, beat))
+._scope({width: 600})
+._punchcard({width: 600})
+
+//
+// Some vocals
+// 
+_VOXCHOP1: s("technologic:0".slow(10).loop(1))
+// .speed(1.2)
+// .room(2)
+.gain(20.0)
+.lpf(slider(2000, 600, 4000))
+.postgain(pick(PG, beat))
+._scope({width: 600})._spectrum()
+
+  //
+  // General 
+  //
+  
+  // Theme
+.theme("bluescreen")
