@@ -3,12 +3,16 @@
 //
 // - https://www.instagram.com/reel/DN0Q7q-YiTj/?hl
 // - https://www.instagram.com/reel/DJc1OaguEJF/
+// - https://www.instagram.com/reel/DJZIHwfu1Nx/
 
 // Set the tempo
 setCps(140/60/4)
 
+// Samples
 samples('github:algorave-dave/samples')
 samples('github:tidalcycles/dirt-samples')
+samples('github:switchangel/breaks')
+samples('github:switchangel/pad')
 
 // Beat structures
 const Structures = [

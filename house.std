@@ -1,0 +1,133 @@
+//     @_switch_angel
+//     @fjpolo
+//
+// - https://www.instagram.com/reel/DJZIHwfu1Nx/
+// - https://www.instagram.com/reel/DJZIHwfu1Nx/
+
+// Set the tempo
+setCps(170/60/4)
+
+// Samples
+samples('github:algorave-dave/samples')
+samples('github:tidalcycles/dirt-samples')
+samples('github:switchangel/breaks')
+samples('github:switchangel/pad')
+
+// Beat structures
+const Structures = [
+  "{x ~!6  x ~ ~ x ~!3 x ~}%16",
+  "{x*4}",
+  "{~}"
+]
+
+const PG  = [
+  "{0.3 0.8!6 0.3 0.8!2  0.3 0.8!3 0.3 0.1}",
+  "{0.3 0.8}%8",
+  "{0.8}"
+]
+
+// [0,1,2]
+const beat = 2 // beat is PG's and Structures' index
+
+//
+// Drum machine
+//
+DRUMS: stack(
+  s("breaks:0/2").fit()
+    .scrub("0@5 .625@3")
+    .scrub(irand(16).seg(8).div(16))
+    .rib(52, 4)
+    .sometimesBy(0.15, ply("2 | 4"))
+    .room(.3).roomsize(.2)
+    .ir("swpad:0")
+    // .coarse(8)
+)
+  ._punchcard({width: 600})
+  ._scope({width: 600})
+//
+// PAD
+//
+PADS: 
+stack(
+  s("swpad:4")
+    .scrub("<.6 .2>@2 .4@3 .5@3")
+    .gain(1.0)
+    .att(.25)
+    .room(1).roomsize(9)
+    .orbit(3)
+)
+  ._punchcard({width: 600})
+  ._scope({width: 600})
+//
+// Hihat
+//
+HIHAT: 
+stack(
+  s("white").seg(8)
+    .decay(tri.range(.05, .15).fast(2))
+    .sometimesBy(.15, x=> x.ply("2").decay(0.08))
+    .gain(.6).orbit(4)
+)
+  ._punchcard({width: 600})
+  ._scope({width: 600})
+
+//
+// Hit that Bass
+//
+BASS:
+stack(
+  note("<g# f c d# [f2@7 g2] g#2 c a#2>".sub(12))
+    .slow(2)
+    .struct("{x!7 x@2 x!7}%8").clip(.86)
+    .s("supersaw").detune(rand.mul(.6))
+    .lpf(100).lpenv(4).lpd(.3).lpa(.02)
+    .orbit("4:.4")
+)
+  ._pianoroll({width: 600})
+  ._scope({width: 600})
+
+//
+// Melody
+//
+MELODY: 
+stack(
+  n(irand(12).mul(3.4)
+    .seg(8)
+    .rib(10, 2)
+  )
+  .scale("c:minor").s("sawtooth").pan(rand)
+  .lpf(400).lpenv(4)
+  .delay(.7).delaytime(1/4.5)
+  .delayfeedback(1)
+  .jux(rev).gain(.7)
+  .orbit(5)
+)
+  ._pianoroll({width: 600})
+  ._scope({width: 600})
+
+//
+// Kirby
+//
+_KIRBY: 
+stack(
+  s("jsmashvox").n("9 8")
+    .clip(3).beat("14, <~ 24>", 32)
+    .orbit(6)
+    .slow(2).begin(0.08).gain(.35).delay(.4)
+    .orbit(6)
+)
+  
+//
+// General 
+//
+  
+// all(x=>
+//   x
+//   .gain(slider(1, 0, 1))
+//   // .lpf(slider(30, 0, 100))
+//   // .lpf(slider(80, 0, 100, 1).pow(2)).lpenv(0)
+//   //   .whenKey("Control:m", x=>x.coarse(8).lpenv(0).color("cyan"))
+// )
+  
+// Theme
+.theme("bluescreen")
