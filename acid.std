@@ -1,0 +1,94 @@
+//     @_switch_angel
+//     @fjpolo
+//
+// - https://www.instagram.com/reel/DN0Q7q-YiTj/?hl
+
+// Set the tempo
+setCps(140/60/4)
+
+samples('github:algorave-dave/samples')
+samples('github:tidalcycles/dirt-samples')
+
+// Beat structures
+const Structures = [
+  "{x ~!6  x ~ ~ x ~!3 x ~}%16",
+  "{x*4}",
+  "{~}"
+]
+
+const PG  = [
+  "{0.3 0.8!6 0.3 0.8!2  0.3 0.8!3 0.3 0.1}",
+  "{0.3 0.8}%8",
+  "{0.8}"
+]
+
+// [0,1,2]
+const beat = 2 // beat is PG' index
+
+//
+// Drum machine
+//
+DRUMS: stack(
+  s("sbd!4")
+)
+  .duck("2:3:4").duckattack(.2).duckdepth(.8)
+  ._punchcard({width: 600})
+  ._scope({width: 600})
+
+//
+// Hit that Bass
+//
+BASS:
+stack(
+  n(irand(10)
+    .sub(7)
+    .seg(16)
+    )
+      .scale("c:minor")
+      .rib(46,1)
+      .distort("2.2:0.3")
+      .s("sawtooth").lpf(200)
+      .lpenv(slider(3.36,0,8))
+      .lpq(12)
+      .orbit(2)
+)
+  ._pianoroll({width: 600})
+  ._scope({width: 600})
+
+//
+// Fog Horn?
+//
+FOGHORN:
+stack(
+  s("supersaw")
+    .detune(slider(2.11, 0, 10))
+    .rel(slider(5.69, 0, 10))
+    .beat(2, 32)
+    .slow(2)
+    // .fm("2").fmh(2.04)
+)
+  ._punchcard({width: 600})
+  ._scope({width: 600})
+//
+// Infinite Riser
+//
+INFINITERISER:
+stack(
+  s("pulse")
+    .orbit(4)
+    .seg(16)
+    .dec(0.1)
+    // .fm(time)
+    // .fmh(time)
+)
+  ._punchcard({width: 600})
+  ._scope({width: 600})
+
+
+  
+//
+// General 
+//
+  
+// Theme
+.theme("bluescreen")
