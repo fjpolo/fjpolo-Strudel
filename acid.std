@@ -2,6 +2,7 @@
 //     @fjpolo
 //
 // - https://www.instagram.com/reel/DN0Q7q-YiTj/?hl
+// - https://www.instagram.com/reel/DJc1OaguEJF/
 
 // Set the tempo
 setCps(140/60/4)
@@ -71,7 +72,7 @@ stack(
 //
 // Melody
 //
-_MELODY: 
+MELODY: 
 stack(
   n(
     irand(16)
@@ -82,13 +83,15 @@ stack(
       .s("triangle")
         .lpenv(slider(0,0,8))
 )
+  .gain(1.5)
+  .room(1.5)
   ._pianoroll({width: 600})
 ._scope({width: 600})
 
 //
 // Fog Horn?
 //
-_FOGHORN:
+FOGHORN:
 stack(
   s("supersaw")
     .detune(slider(2.11, 0, 10))
@@ -102,14 +105,14 @@ stack(
 //
 // Infinite Riser
 //
-_INFINITERISER:
+INFINITERISER:
 stack(
   s("pulse")
     .orbit(4)
     .seg(16)
     .dec(0.1)
     // .fm(time).fmh(time)
-    .gain(1.5)
+    .gain(2.0)
 )
   ._punchcard({width: 600})
   ._scope({width: 600})
@@ -117,6 +120,13 @@ stack(
 //
 // General 
 //
+all(x=>
+  x
+  .gain(slider(1, 0, 1))
+  // .lpf(mouseX.segment(4).range(0, 200))
+  // .lpf(slider(80, 0, 100, 1).pow(2)).lpenv(0)
+  //   .whenKey("Control:m", x=>x.coarse(8).lpenv(0).color("cyan"))
+)
   
 // Theme
 .theme("bluescreen")
