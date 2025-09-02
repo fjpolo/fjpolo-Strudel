@@ -60,18 +60,18 @@ stack(
       .rib(46,1)
       .distort("2.2:0.3")
       .s("sawtooth").lpf(200)
-      .lpenv(slider(3.6,0,8))
-      // .lpenv(mouseX.segment(4).range(0, 12))
-      .lpq(12)
-      .orbit(2)
-      .room(1).roomsize(6)
+        .lpenv(slider(3.6,0,8))
+        // .lpenv(mouseX.segment(4).range(0, 12))
+        .lpq(12)
+        .orbit(2)
+        .room(1).roomsize(6)
 )
   ._pianoroll({width: 600})
   ._scope({width: 600})
 //
 // Melody
 //
-MELODY: 
+_MELODY: 
 stack(
   n(
     irand(16)
@@ -80,14 +80,15 @@ stack(
       .scale("c:minor")
       .rib(8,1)
       .s("triangle")
-        .lpenv(slider(0.088,0,8))
+        .lpenv(slider(0,0,8))
 )
   ._pianoroll({width: 600})
+._scope({width: 600})
 
 //
 // Fog Horn?
 //
-FOGHORN:
+_FOGHORN:
 stack(
   s("supersaw")
     .detune(slider(2.11, 0, 10))
@@ -101,7 +102,7 @@ stack(
 //
 // Infinite Riser
 //
-INFINITERISER:
+_INFINITERISER:
 stack(
   s("pulse")
     .orbit(4)
@@ -112,12 +113,6 @@ stack(
 )
   ._punchcard({width: 600})
   ._scope({width: 600})
-
-
-_$: note("c e g b g e")
-.fm("<0 1 2 8 32>")
-._scope()
-
   
 //
 // General 
