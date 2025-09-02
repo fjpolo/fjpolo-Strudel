@@ -23,14 +23,25 @@ const PG  = [
 ]
 
 // [0,1,2]
-const beat = 2 // beat is PG' index
+const beat = 2 // beat is PG's and Structures' index
 
 //
 // Drum machine
 //
 DRUMS: stack(
-  s("sbd!4")
+  // -- Kick --
+  s("sbd!4"),
+  // -- Hihat
+  stack(
+    // -- Uphat
+    // s("[~ hh]!4").att(0.1),
+    // -- Rolling hihat
+    // s("[hh]").struct("x*8")
+  )
+  // .gain(2.0)
+  .bank("RolandTR909")
 )
+  .distort("3:.3")
   .duck("2:3:4").duckattack(.2).duckdepth(.8)
   ._punchcard({width: 600})
   ._scope({width: 600})
@@ -40,17 +51,20 @@ DRUMS: stack(
 //
 BASS:
 stack(
-  n(irand(10)
-    .sub(7)
-    .seg(16)
+  n(
+    irand(10)
+      .sub(7)
+      .seg(16)
     )
       .scale("c:minor")
       .rib(46,1)
       .distort("2.2:0.3")
       .s("sawtooth").lpf(200)
-      .lpenv(slider(3.36,0,8))
+      .lpenv(slider(3.6,0,8))
+      // .lpenv(mouseX.segment(4).range(0, 12))
       .lpq(12)
       .orbit(2)
+      .room(1).roomsize(6)
 )
   ._pianoroll({width: 600})
   ._scope({width: 600})
@@ -65,7 +79,7 @@ stack(
     .rel(slider(5.69, 0, 10))
     .beat(2, 32)
     .slow(2)
-    // .fm("2").fmh(2.04)
+    // .fm(time).fmh(time)
 )
   ._punchcard({width: 600})
   ._scope({width: 600})
@@ -78,12 +92,16 @@ stack(
     .orbit(4)
     .seg(16)
     .dec(0.1)
-    // .fm(time)
-    // .fmh(time)
+    // .fm(time).fmh(time)
+    .gain(1.5)
 )
   ._punchcard({width: 600})
   ._scope({width: 600})
 
+
+_$: note("c e g b g e")
+.fm("<0 1 2 8 32>")
+._scope()
 
   
 //
