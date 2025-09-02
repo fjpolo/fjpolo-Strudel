@@ -1,0 +1,167 @@
+//     @_switch_angel
+//     @fjpolo
+//
+// - https://www.instagram.com/reel/DJtjJI4uqHb/
+// - https://www.instagram.com/reel/DJ0vW4bxJgc/
+
+// Set the tempo
+setCps(170/60/4)
+
+// Samples
+samples('github:algorave-dave/samples')
+samples('github:tidalcycles/dirt-samples')
+samples('github:switchangel/breaks')
+samples('github:switchangel/pad')
+
+// Beat structures
+const Structures = [
+  "{x ~!6  x ~ ~ x ~!3 x ~}%16",
+  "{x*4}",
+  "{~}"
+]
+
+const PG  = [
+  "{0.3 0.8!6 0.3 0.8!2  0.3 0.8!3 0.3 0.1}",
+  "{0.3 0.8}%8",
+  "{0.8}"
+]
+
+// [0,1,2]
+const beat = 2 // beat is PG's and Structures' index
+
+//
+// Drum machine
+//
+DRUMS: stack(
+  s("breaks:0/2").fit()
+    // .lpf(slider(1000, 0, 1000, 1)).pow(2)
+    .scrub("0!4")
+    .scrub("0@2 5 2 2 0 5 2".div(8))
+    // .scrub(irand(16).div(16).seg(8).rib(35, 4))
+    // .distort("2:.6").hpf(200).coarse(8).decay(.7)
+    // .decay(.3).coarse(8)
+    // .when("0@7 1", rarely(ply("4")))
+    .postgain(.8)
+    .orbit(2)
+)
+  ._punchcard({width: 600})
+  ._scope({width: 600})
+//
+// PAD
+//
+PADS: 
+stack(
+  s("swpad:4")
+    .note("d#2")
+    .scrub("0@5 0@3".add("<0.5@4 0.3@2 0.4 [0.44 0.48]>"))
+    .lpf(slider(32, 0, 100, 1).pow(2))
+    .att(.3)
+    .gain(.8)
+    .orbit(4)
+)
+  ._punchcard({width: 600})
+  ._scope({width: 600})
+//
+// Hihat
+//
+HIHAT: 
+stack(
+  s("white!8")
+     .hpf(1200)
+     .decay(itri.fast(4).range(0.05, 0.1))
+    .sometimesBy(.1, x => x.ply("2 | 4"))
+    .gain(.8)
+)
+  ._punchcard({width: 600})
+  ._scope({width: 600})
+//
+// Piano
+//
+PIANO:
+stack(
+  s("piano")
+    .sometimes(x => x.speed("-1"))
+    .note("<f#@4 c#@2 b>"
+      .add("12 0 7 0 -5")
+      // .grab("g#:f#:c#:b")
+    )
+    .struct("{x@3 @3 @3 x@3 x}/8")
+    .delay(.7).delaytime(rand)
+    .delayfeedback(rand)
+    .jux(rev)
+    .begin(rand.range(0, .1))
+    .postgain(.6)
+    .orbit(5)
+)
+  ._pianoroll({width: 600})
+  ._scope({width: 600})
+
+//
+// Hit that Bass
+//
+BASS:
+stack(
+  s("tear_0:.7, jc 1, white 2:.5")
+    .scrub(rand.div(4))
+    .note("<a@4 c#4@2 [<e e4>]@2>".add(-24))
+    .struct("{x@3 x@3 x@3 x@3 x x@3 x@3 x@3 x@3 x x@3}/8")
+    .lpf(150)
+    .lpenv("3 2 3 4 3 2").mul(slider(0.5, 0, 4, 1))
+    // .clip(1)
+    .lpq(.4).lpa(0.15).lpd(.4).postgain(1.17).room(.7).roomsize(.5)
+    .orbit(3)
+)
+  ._pianoroll({width: 600})
+  ._scope({width: 600})
+//
+// Glitch lead
+//
+GLITCHLEAD:
+stack(
+  s("square").postgain(.8)
+    .scrub(rand.seg(16))
+    .note("b6 | b5")
+    .pan(rand)
+    .distort("5:.3")
+    .hpf(500).lpf(4000).crush(4)
+    .decay(.05)
+    .orbit(6)
+)
+  ._pianoroll({width: 600})
+  ._scope({width: 600})
+
+//
+// Melody
+//
+MELODY: 
+stack(
+)
+  ._pianoroll({width: 600})
+  ._scope({width: 600})
+
+//
+// Kirby
+//
+_KIRBY: 
+stack(
+  s("jsmashvox").n("9 8")
+    .clip(3).beat("14, <~ 24>", 32)
+    .orbit(6)
+    .slow(2).begin(0.08).gain(.35).delay(.4)
+    .orbit(6)
+)
+  
+//
+// General 
+//
+  
+// all(x=>
+//   x
+//   .gain(slider(1, 0, 1))
+//   // .lpf(slider(30, 0, 100))
+//   // .lpf(slider(80, 0, 100, 1).pow(2)).lpenv(0)
+//   //   .whenKey("Control:m", x=>x.coarse(8).lpenv(0).color("cyan"))
+// )
+  
+// Theme
+.theme("bluescreen")
