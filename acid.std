@@ -68,6 +68,21 @@ stack(
 )
   ._pianoroll({width: 600})
   ._scope({width: 600})
+//
+// Melody
+//
+MELODY: 
+stack(
+  n(
+    irand(16)
+      .seg(16)
+    )
+      .scale("c:minor")
+      .rib(8,1)
+      .s("triangle")
+        .lpenv(slider(0.088,0,8))
+)
+  ._pianoroll({width: 600})
 
 //
 // Fog Horn?
