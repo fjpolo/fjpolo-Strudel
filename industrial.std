@@ -1,22 +1,34 @@
-//     @fjpolo
+//   @fjpolo
+//   Based on @_switch_angel
 //
-// - https://setaocmass.bandcamp.com/album/sample-pack-vol-1
-// - https://www.freetousesounds.com/
-
+// - https://www.instagram.com/reel/DN0Q7q-YiTj/?hl
+// - https://www.instagram.com/reel/DJc1OaguEJF/
+// - https://www.instagram.com/reel/DJZIHwfu1Nx/
 
 // Set the tempo
-setCps(152/60/4)
+let bg_bpm = slider(154, 140, 172, 1)
+setCps(140/60/4)
 
-samples('github:algorave-dave/samples')
-samples('github:tidalcycles/dirt-samples')
+// Set key
+let bg_key = "e:phrygian"
 
+// Enables
+let sine_en = 0
+let kick_en = 1
+let rumble_en = 1
+let hh_en = 1
+let bass_en = 1
+let melody_en = 1
+let fg_en = 0
+let inf_en = 0
+
+// Beat structures
 const Structures = [
   "{x ~!6  x ~ ~ x ~!3 x ~}%16",
   "{x*4}",
   "{~}"
 ]
 
-// Beat structures
 const PG  = [
   "{0.3 0.8!6 0.3 0.8!2  0.3 0.8!3 0.3 0.1}",
   "{0.3 0.8}%8",
@@ -24,87 +36,292 @@ const PG  = [
 ]
 
 // [0,1,2]
-const beat = 2 // beat is PG' index
+const beat = 2 // beat is PG's and Structures' index
 
 //
-// Drum machine
+// Kick
 //
-DRUM: stack(
-
+KICK:
   // -- Kick --
-  stack(
-    s("[bd!4]"),
-    stack(
-      // -- Rumble - Low
-      s("[bd!4]")
-      .lpf(slider(500, 10, 20000))
-      .gain(slider(1.2, 0.1, 10.0))
-      ,
-      // -- Rumble - Low
-      s("[bd!4]")
-      .distort(slider(10.0, 0.1, 12.0))
-      .hpf(1200).gain(slider(0.01, 0.001, 1.0))
-    )
-    .delay(slider(1.0, 0.1, 10.0))
-    .room(slider(0.1, 0.0, 10.0))
-    ,
-  )
-  .lpf(850),
-                                        
-  // -- Foley
-  stack(
-    s("battles:000_expl01")
-    .gain(2.0),
-    // s("industrial:003_04")
-    // .struct("[~ 1 1 1]")
-    // ,
-    s("battles:000_explo1")
-    .struct("[~ 1 1 1]")
-    .gain(1.25)
-  )
-  ,
+  s("bd!4")
+    .bank("RolandTR909")
+  // .sometimesBy(0.15, ply(2))
+  .loop(1)
+  .speed(1)
+  .orbit(0)
+  .distort(4)
+  //.distort("3, .2")
+  // .duck("2:3:4").duckattack(.5).duckdepth(1.8)
+.postgain(kick_en)
+//._punchcard()
 
+//Reverse-reverb pattern
+_REVERSE_SWEEP:
+  stack(
+    // 1. A delayed, long reverb on the kick sound.
+    s("~ ~ sbd ~")
+      .room(1).roomsize(10) // Long reverb effect
+      .gain(0.6) // Volume control for the reverb tail
+      .lpf(
+        // 2. The filter sweep that creates the "swell"
+        n(
+          // Use slow to make the sweep last over a few cycles
+          slow(4, (i, p) => p.range(100, 3000))
+        )
+      )
+  )
+    .orbit(10)
+
+
+//
+//Rumble
+//
+_RUMBLE:
+stack(
+  s("[bd!4]"),
+  // -- Rumble - Low
+  s("[bd!4]")
+    .lpf(200)
+    .distort(1.0)
+  ,
+  // -- Rumble - Low
+  s("[bd!4]")
+    .distort(slider(10.2745, 0.1, 12.0))
+    .hpf(1200)
+)
+.orbit(1)
+.delay(5)
+.room(5)
+.bank("RolandTR909")
+.gain(0.25)
+.postgain(rumble_en)
+//._scope({width: 300})
+
+//
+// Snare
+//
+const snare_rythm =`<[~ ~ ~ [~ ~ sd ]]> <[~ sd ~ sd sd ~ sd ~ sd ~ ~]>`
+_SNARE:
+stack(
+  s(snare_rythm)
+  //.bank("RolandST909")
+)
+.slow(1.5)
+.orbit(2)
+//._punchcard()
+
+//
+// Hihat
+//
+_HIHAT:
+  stack(
   // -- Hihat
   stack(
     // -- Uphat
-    s("[~ hh]!4").gain(4.0),
+    s("[~ hh]!4"),
     // -- Rolling hihat
-    s("[hh]").struct("x*8")
-  ).gain(2.0).bank("RolandTR909")
+    // s("[hh]").struct("x*8")
+  )
+  .orbit(3)
+  .bank("RolandTR909")
 )
-._punchcard({width: 600})
-
+.distort(2)
+//.delay(2)
+.postgain(hh_en)
 
 //
 // Hit that Bass
 //
-_BASSLINE: note("f#3@8 c#3@2 d3@5 a3@8 c#3@3 d3@5 f#2@8 c#3@3 d3@5 d2@8 d3@3 c#3@5".slow(8))
-.struct("x*32")
-.sustain("0.5")
-.sound("[square, sawtooth]")
-.transpose("[-12, 0]")
-.coarse(2)
-.decay(0.075).gain(0.75).hpf(150)
-.lpf(mouseX.segment(4).range(350, 2000))
-// .lpf(slider(350, 350, 2000))
-.postgain(pick(PG, beat))
-._scope({width: 600})
-._punchcard({width: 600})
+_BASS:
+stack(
+  n(
+    irand(8)
+      .sub(7)
+      .seg(8)
+    )
+      .scale(bg_key)
+      .rib(8,1)
+      .distort("2.2:0.3")
+      .s("supersaw")
+        .lpf(200)
+        .lpenv(slider(3.712,0,8))
+        // .lpenv(mouseX.segment(4).range(0, 12))
+        .lpq(12)
+        .orbit(4)
+        .room(1)
+          .roomsize(6)
+)
+.duck(0).duckattack(.5).duckdepth(.5)
+.gain(2.0)
+.postgain(bass_en)
+.loop(1)
+.slow(1)
+//._punchcard()
+
+DEEPBASS:
+stack(
+  // note("[e0 ~ e0 f0]")
+  note("[e0] [f0]")
+      .distort("3:0.3")
+      .s("supersaw")
+        .lpf(100)
+        .lpenv(slider(0,0,8))
+        // .lpenv(mouseX.segment(4).range(0, 12))
+        .lpq(12)
+        .orbit(4)
+        .room(1)
+          .roomsize(11)
+)
+//.duck(0).duckattack(.5).duckdepth(.5)
+//.gain(2.0)
+.postgain(bass_en)
+.loop(1)
+.slow(4)
+.seg(16)
+//._punchcard()
 
 //
-// Some vocals
-// 
-_VOXCHOP1: s("technologic:0".slow(10).loop(1))
-// .speed(1.2)
-// .room(2)
-.gain(20.0)
-.lpf(slider(2000, 600, 4000))
-.postgain(pick(PG, beat))
-._scope({width: 600})._spectrum()
+// Melody
+//
+_MELODY: 
+stack(
+  n(
+    irand(16)
+      //.add(7)
+      .seg(16)
+      //.add("0, .1, 3, 5, 9")
+      //.sometimesBy(.15, x=>x.add("0, 3"))
+   )
+      .scale(bg_key)
+      .rib(8,1)
+      .s("sawtooth")
+      .lpenv(3)
+)
+//.sometimesBy(0.12, x=>x.rev())
+//.sometimesBy(.15, x=>"~")
+//.sometimesBy(.05, x=>x.add("1"))
+//.sometimesBy(.1, x=>x.palindrome())
+.loop(1)
+.slow(1)
+.postgain(5*melody_en)
+.room(2)
+//._punchcard({width: 600})
 
-  //
-  // General 
-  //
+//
+// Sine
+//
+_SINE:
+stack(
+  n("24")
+      .scale(bg_key)
+      .adsr("10:10:1:10")
+      .fm(time).fmh(time)
+)
+.loop(1)
+.slow(1)
+.postgain(sine_en)
+
+//
+// Fog Horn
+//
+FOGHORN:
+stack(
+    s("supersaw")
+    //.detune(4)
+    .rel(9)
+    .beat(2, 32)
+    .slow(4)
+    .fm(1.5).fmh(.2)
+)
+.gain(2.0)
+.postgain(fg_en)
+
+//
+// Infinite Riser
+//
+_INFINITE_RISER:
+stack(
+  s("pulse")
+    .orbit(4)
+    .seg(16)
+    .dec(0.1)
+    .fm(time).fmh(time)
+    .gain(1.2)
+)
+.postgain(inf_en)
+
+//
+// Arpeggio
+//
+_ARPEGGIO:
+stack(
+  //n("[1 3 5 7] [2 4 6 8] [4 6 8 10]")
+  n("[1 3 5 7] [2 4 6 8]")
+  // n("[1 3 5 3] [2 4 6 4]")
+  //.slow(2)
+    .scale(bg_key)
+    .s("triangle")
+)
+.loop(1)
+// ._punchcard({width: 600})
+//._scope()
+//._spectrum()
+
+//
+// Machines
+//
+MACHINE01:
+// A fast, repetitive rhythm with a glitch
+s("bd hh sn hh!8")
+  .sometimes(
+    // A rapid-fire repeating glitch
+    ply(4)
+)
+.distort(6)
+// .room(10)
+
+_DRONE01:
+// A long, resonant drone
+s("supersaw")
+  // Sets a long release time in seconds
+  .rel(8)
+  // Adds a deep, resonant reverb
+  .room(1).roomsize(10)
+  .gain(0.6)
+
+
+//
+// Atmospheric effects
+//
+// A thunderclap with a long, rumbling decay
+_THUNDER01:
+stack(
+  // The initial crack of the thunder
+  s("noise").gain(1.2).rel(0.1),
+
+  // The deep, rumbling body of the thunder
+  s("noise")
+    // Use a low-pass filter to get the deep rumble
+    .lpf(60)
+    // Create a long decay to simulate the rumble
+    .rel(10)
+    // Add distortion to make it sound aggressive and gritty
+    .distort(3.0, 0.5)
+    // A massive reverb to simulate a long, echoing rumble
+    .room(1).roomsize(20)
+)
+.rel(9)
+.beat(2, 32)
+.slow(8)
+
+
+all(x => 
+  x.postgain(slider(0.17,0,1))
+    //._spectrum({width: 600})
+   //._punchcard()
+   .punchcard()
+   //._scope({width: 600})
+)
   
-  // Theme
+// Theme
 .theme("bluescreen")

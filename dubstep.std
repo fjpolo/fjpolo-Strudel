@@ -1,0 +1,157 @@
+//     @_switch_angel
+//     @fjpolo
+//
+// - https://www.instagram.com/reel/DKeR0Btt-5Z/
+
+// Set the tempo
+setCps(120/60/4)
+
+// Samples
+samples('github:algorave-dave/samples')
+samples('github:tidalcycles/dirt-samples')
+samples('github:switchangel/breaks')
+samples('github:switchangel/pad')
+
+// Beat structures
+const Structures = [
+  "{x ~!6  x ~ ~ x ~!3 x ~}%16",
+  "{x*4}",
+  "{~}"
+]
+
+const PG  = [
+  "{0.3 0.8!6 0.3 0.8!2  0.3 0.8!3 0.3 0.1}",
+  "{0.3 0.8}%8",
+  "{0.8}"
+]
+
+// [0,1,2]
+const beat = 2 // beat is PG's and Structures' index
+
+// Energy
+const energy = slider(0, 1)
+
+// Rythm
+const rythm = [
+  "{1 -!3 1 - 1 1 - 1 1!2 -!4}%16",
+  "{-!2 1 - 1 - 1 1 - 1 1@2 -!4}%16"
+]
+
+//
+// Drum machine
+//
+DRUMS: stack(
+  // --- Kick
+  s("bd:8").note("c2").beat("0, 7, 10?", 16).gain(1.2).decay(.3),
+  // --- Clap
+  s("cp").note("c2").beat("4, 12", 16),
+  // Hihats
+  s("white").struct("x!8").decay(sine.range(0, 0.12).fast(2))
+)
+  ._punchcard({width: 600})
+  ._scope({width: 600})
+//
+// PAD
+//
+PADS: 
+stack(
+)
+  ._punchcard({width: 600})
+  ._scope({width: 600})
+//
+// Hihat
+//
+HIHAT: 
+stack(
+)
+  ._punchcard({width: 600})
+  ._scope({width: 600})
+
+//
+// Piano
+//
+PIANO:
+stack(
+)
+  ._pianoroll({width: 600})
+  ._scope({width: 600})
+
+//
+// Hit that Bass
+//
+BASS:
+stack(
+  note("<[e2!3 f2!2 f1!3]!3 [g2!3 a2!2 a1@3]>")
+    .s("square, supersaw:0.2")
+    .struct(pick(rythm, "<0!2 1 0>"))
+    .lpf(100)
+    .lpenv(energy.mul(8))
+    .lpd(energy.range(0.05, 0.2))
+    .gain(1.3)
+    .room(.7).roomsize(1.2)
+    .orbit(3)
+)
+  ._pianoroll({width: 600})
+  ._scope({width: 600})
+//
+// Leads
+//
+LEAD1:
+stack(
+  note("<[b!3 c4!2 a4@3]!3 [d4!3 e4!2 c5@3]>")
+    .s("pulse:.7:.4, supersaw")
+    .struct(pick(rythm, "<0 1>"))
+    .delay(.6).delaytime(2/16.1).delayfeedback(.4)
+    .orbit(4)
+    .lpf(100)
+    .lpenv(energy.mul(8).add(4)).lpd(.2).postgain(1.2)
+)
+  ._pianoroll({width: 600})
+  ._scope({width: 600})
+
+_LEAD2:
+stack(
+  note("g4")
+    .struct("{1!5 - 1!2 - 1!2 - 1!3 -}%16")
+    .s("sawtooth")
+    .pan(rand.fast(4))
+    .orbit(4)
+    .jux(rev)
+    .clip(tri.fast(2).range(0.3, 0.9))
+    .decay(6)
+    .room(1).roomsize(.6)
+    .orbit(5)
+    .postgain(.6)
+)
+  ._pianoroll({width: 600})
+  ._scope({width: 600})
+
+//
+// Melody
+//
+MELODY: 
+stack(
+)
+  ._pianoroll({width: 600})
+  ._scope({width: 600})
+
+//
+// Kirby
+//
+_KIRBY: 
+stack(
+  s("jsmashvox").n("9 8")
+    .clip(3).beat("14, <~ 24>", 32)
+    .orbit(6)
+    .slow(2).begin(0.08).gain(.35).delay(.4)
+    .orbit(6)
+)
+  
+//
+// General 
+//
+  
+// all(x=> x.add(note(-2)).mul(postgain(.8)))
+  
+// Theme
+.theme("bluescreen")
