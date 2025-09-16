@@ -17,7 +17,7 @@ let bg_key = "e:phrygian"
 //
 // Kick
 //
-KICK:
+_KICK:
   // -- Kick --
   s("bd!4")
     // .bank("RolandTR909")
@@ -27,7 +27,7 @@ KICK:
   .distort("2, .7")
 // .duck("2:3:4").duckattack(.5).duckdepth(1.8)
 //._punchcard()
-// .gain(mouseX.range(0, 1))
+.gain(mouseX.range(0, 1))
 
 //Reverse-reverb pattern
 _REVERSE_SWEEP:
@@ -71,6 +71,7 @@ stack(
 .gain(0.25)
 //._scope({width: 300})
 .gain(mouseX.range(0, .25))
+// .gain(.25)
 
 //
 // Snare
@@ -214,7 +215,7 @@ stack(
 //
 // Machines
 //
-MACHINES:
+_MACHINES:
 stack(
 // A fast, repetitive rhythm with a glitch
 s("bd hh sn hh!8")
@@ -235,7 +236,7 @@ s("supersaw")
   .distort(3)
   // .gain(mouseY.range(0, 2.0))
 )
-//.gain(mouseX.range(0, 1.0))
+.gain(mouseX.range(0, 1.0))
 
 _DRONE01:
 // A long, resonant drone
@@ -262,10 +263,12 @@ stack(
 
 
 _HAMMER_ANVIL:
-s("anvil:00").struct("[x ~ ~ ~]")
+// s("anvil:00").struct("[x ~ ~ ~]").rev()
+s("anvil:00").struct("[~ x x x]")
 // .sometimesBy(.25, ply(2))
-.gain(2)
+.gain(3)
 .loop(1)
+.room(1.5)
 
 _HAMMERx2_ANVIL:
 s("anvil:01").fit()
@@ -277,6 +280,17 @@ _METAL_GRINDER:
 s("metalgrinder:00").struct("[~ x x x]")
 .loop(1)
 .distort(6)
+.gain(0.1)
+.lpf(5000)
+.room(1.5)
+
+_METAL_GRINDER_FULL:
+s("metalgrinder:00")
+.loop(1)
+.distort(6)
+.gain(0.05)
+.lpf(5000)
+.room(1.5).roomsize(5)
 
 _TELEGRAPH_SOS:
 note("[[80 80] [80 ~] ~ 80] [80 80 ~ [80 80]] [[80 ~] ~ ~ ~]")
@@ -286,7 +300,7 @@ note("[[80 80] [80 ~] ~ 80] [80 80 ~ [80 80]] [[80 ~] ~ ~ ~]")
   .slow(4)
   .distort(2)
   .room(1).roomsize(7)
-.gain(mouseX.range(0, 1))
+// .gain(mouseX.range(0, 1))
 
 //
 // Atmospheric effects
