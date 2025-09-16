@@ -1,7 +1,7 @@
 //   @fjpolo
 
 // Samples
-samples('github:fjpolo/fjpolo-Strudel')
+samples('github:fjpolo/fJpolo-Strudel')
 samples('github:algorave-dave/samples')
 samples('github:tidalcycles/dirt-samples')
 samples('github:switchangel/breaks')
@@ -17,17 +17,17 @@ let bg_key = "e:phrygian"
 //
 // Kick
 //
-_KICK:
+KICK:
   // -- Kick --
   s("bd!4")
-    .bank("RolandTR909")
+    // .bank("RolandTR909")
   // .sometimesBy(0.15, ply(2))
   .speed(1)
   .orbit(0)
-  .distort("3, .2")
+  .distort("2, .7")
 // .duck("2:3:4").duckattack(.5).duckdepth(1.8)
 //._punchcard()
-.gain(mouseX.range(0, 1))
+// .gain(mouseX.range(0, 1))
 
 //Reverse-reverb pattern
 _REVERSE_SWEEP:
@@ -214,7 +214,7 @@ stack(
 //
 // Machines
 //
-_MACHINES:
+MACHINES:
 stack(
 // A fast, repetitive rhythm with a glitch
 s("bd hh sn hh!8")
@@ -235,7 +235,7 @@ s("supersaw")
   .distort(3)
   // .gain(mouseY.range(0, 2.0))
 )
-.gain(mouseX.range(0, 1.0))
+//.gain(mouseX.range(0, 1.0))
 
 _DRONE01:
 // A long, resonant drone
@@ -261,11 +261,22 @@ stack(
 // .gain(0.1)
 
 
-samples('github:fjpolo/fjpolo-Strudel')
 _HAMMER_ANVIL:
+s("anvil:00").struct("[x ~ ~ ~]")
+// .sometimesBy(.25, ply(2))
+.gain(2)
+.loop(1)
+
+_HAMMERx2_ANVIL:
 s("anvil:01").fit()
 .loop(1)
-//._spectrum()
+.slow(2)
+.gain(2)
+
+_METAL_GRINDER:
+s("metalgrinder:00").struct("[~ x x x]")
+.loop(1)
+.distort(6)
 
 _TELEGRAPH_SOS:
 note("[[80 80] [80 ~] ~ 80] [80 80 ~ [80 80]] [[80 ~] ~ ~ ~]")
