@@ -1,6 +1,8 @@
 //   @fjpolo
 
+//
 // Samples
+//
 samples('github:fjpolo/fjpolo-Strudel')
 samples('github:algorave-dave/samples')
 samples('github:tidalcycles/dirt-samples')
@@ -37,15 +39,22 @@ let sine_en = slider(0, 0, 1, 1)
 
 // BPM
 const BPM_SLIDER = slider(154, 140, 172, 1)
-
 // RUMBLE
 const RUMBLE_DISTORTION_SLIDER = slider(0, 0, 10.0, .5)
 
-// Set the tempo
+//
+// Set tempo
+//
 setCps(140/60/4)
 
+//
 // Set key
+//
 let bg_key = "e:phrygian"
+
+
+/*************************************************************************/
+
 
 //
 // Kick
@@ -82,7 +91,6 @@ _REVERSE_SWEEP:
   )
   .gain(rev_sweep_en)
   .orbit(10)
-
 
 //
 //Rumble
@@ -259,25 +267,25 @@ stack(
 //
 _MACHINES:
 stack(
-// A fast, repetitive rhythm with a glitch
-s("bd hh sn hh!8")
-  .sometimes(
-    // A rapid-fire repeating glitch
-    ply(4)
-)
-.distort(3)
-// .gain(machines_en * mouseX.range(0, 1.0))
+  // A fast, repetitive rhythm with a glitch
+  s("bd hh sn hh!8")
+    .sometimes(
+      // A rapid-fire repeating glitch
+      ply(4)
+    )
+  .distort(3)
+  // .gain(machines_en * mouseX.range(0, 1.0))
 ,
 
-// A slowly growing bassy feeling
-s("supersaw")
-  .slow(1)
-  // .lpf(n(slow(16, (i,p) => p.range(100, 4000))))
-  // .lpf(mouseX.range(0, 4000))
-  // .lpf(time)
-  .distort(3)
-  // .gain(machines_en * mouseY.range(0, 2.0))
-)
+  // A slowly growing bassy feeling
+  s("supersaw")
+    .slow(1)
+    // .lpf(n(slow(16, (i,p) => p.range(100, 4000))))
+    // .lpf(mouseX.range(0, 4000))
+    // .lpf(time)
+    .distort(3)
+    // .gain(machines_en * mouseY.range(0, 2.0))
+  )
 .gain(machines_en)
 // .gain(machines_en * mouseX.range(0, 1.0))
 
