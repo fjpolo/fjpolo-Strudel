@@ -1,14 +1,47 @@
 //   @fjpolo
 
 // Samples
-samples('github:fjpolo/fJpolo-Strudel')
+samples('github:fjpolo/fjpolo-Strudel')
 samples('github:algorave-dave/samples')
 samples('github:tidalcycles/dirt-samples')
 samples('github:switchangel/breaks')
 samples('github:switchangel/pad')
 
+//
+// Enables
+//
+let kick_en = slider(1, 0, 1, 1)
+let rumble_en = slider(0, 0, 1, 1)
+let rev_sweep_en = slider(1, 0, 1, 1)
+let sd_en = slider(0, 0, 1, 1)
+let hh_en = slider(0, 0, 1, 1)
+let deepbass_en = slider(0, 0, 1, 1)
+let melody_en = slider(0, 0, 1, 1)
+let fg_en = slider(0, 0, 1, 1)
+let inf_en = slider(0, 0, 1, 1)
+let arpeggio_en = slider(0, 0, 1, 1)
+let machines_en = slider(0, 0, 1, 1)
+let drone01_en = slider(0, 0, 1, 1)
+let robot_en = slider(0, 0, 1, 1)
+let anvil_en = slider(0, 0, 1, 1)
+let anvilx2_en = slider(0, 0, 1, 1)
+let metal_grinder_en = slider(0, 0, 1, 1)
+let metal_grinder_full_en = slider(0, 0, 1, 1)
+let telegraph_en = slider(0, 0, 1, 1)
+let thunder_en = slider(0, 0, 1, 1)
+let sine_en = slider(0, 0, 1, 1)
+
+//
+// Sliders
+//
+
+// BPM
+const BPM_SLIDER = slider(154, 140, 172, 1)
+
+// RUMBLE
+const RUMBLE_DISTORTION_SLIDER = slider(0, 0, 10.0, .5)
+
 // Set the tempo
-let bg_bpm = slider(154, 140, 172, 1)
 setCps(140/60/4)
 
 // Set key
@@ -17,10 +50,11 @@ let bg_key = "e:phrygian"
 //
 // Kick
 //
-_KICK:
-  // -- Kick --
-  s("bd!4")
-    // .bank("RolandTR909")
+KICK:
+// -- Kick --
+s("bd!4")
+  .gain(kick_en)
+  // .bank("RolandTR909")
   // .sometimesBy(0.15, ply(2))
   .speed(1)
   .orbit(0)
@@ -29,7 +63,9 @@ _KICK:
 //._punchcard()
 .gain(mouseX.range(0, 1))
 
-//Reverse-reverb pattern
+//
+//Reverse-reverb kick pattern
+//
 _REVERSE_SWEEP:
   stack(
     // 1. A delayed, long reverb on the kick sound.
@@ -44,6 +80,7 @@ _REVERSE_SWEEP:
         )
       )
   )
+  .gain(rev_sweep_en)
   .orbit(10)
 
 
@@ -60,7 +97,7 @@ stack(
   ,
   // -- Rumble - Low
   s("[bd!4]")
-    .distort(slider(0, 0, 10.0, .5))
+    .distort(RUMBLE_DISTORTION_SLIDER)
     // .distort(mouseX.range(0, 10))
     .hpf(1200)
 )
@@ -70,7 +107,7 @@ stack(
 .bank("RolandTR909")
 .gain(0.25)
 //._scope({width: 300})
-.gain(mouseX.range(0, .25))
+// .gain(mouseX.range(0, .25))
 // .gain(.25)
 
 //
@@ -82,6 +119,7 @@ stack(
   s(snare_rythm)
   //.bank("RolandST909")
 )
+.gain(sd_en)
 .slow(1.5)
 .orbit(2)
 //._punchcard()
@@ -101,13 +139,14 @@ _HIHAT:
   .orbit(3)
   .bank("RolandTR909")
 )
+.gain(hh_en)
 .distort(2)
 //.delay(2)
 
 //
 // Hit that Bass
 //
-_DEEPBASS:
+DEEPBASS:
 stack(
   // note("[e0 ~ e0 f0]")
   note("[e0] [f0]")
@@ -122,7 +161,7 @@ stack(
           .roomsize(11)
 )
 //.duck(0).duckattack(.5).duckdepth(.5)
-//.gain(2.0)
+.gain(deepbass_en)
 .loop(1)
 .slow(4)
 .seg(16)
@@ -145,6 +184,7 @@ stack(
       .s("sawtooth")
       .lpenv(3)
 )
+.gain(melody_en)
 //.sometimesBy(0.12, x=>x.rev())
 //.sometimesBy(.15, x=>"~")
 //.sometimesBy(.05, x=>x.add("1"))
@@ -165,6 +205,7 @@ stack(
       .adsr("10:10:1:10")
       .fm(time).fmh(time)
 )
+.gain(sine_en)
 .loop(1)
 .slow(1)
 
@@ -180,8 +221,8 @@ stack(
     .slow(2)
     .fm(1.5).fmh(.2)
 )
- .gain(1.5)
-//.gain(mouseX.range(0, 1.5))
+ .gain(1.5 * fg_en)
+//.gain(fg_en * mouseX.range(0, 1.5))
 
 //
 // Infinite Riser
@@ -194,8 +235,8 @@ stack(
     .dec(0.1)
     .fm(time).fmh(time)
 )
-// .gain(1.2)
-.gain(mouseX.range(0, 1.2))
+.gain(1.2 * inf_en)
+// .gain(inf_en * mouseX.range(0, 1.2))
 
 //
 // Arpeggio
@@ -209,6 +250,7 @@ stack(
     .scale(bg_key)
     .s("triangle")
 )
+.gain(arpeggio_en)
 .loop(1)
 // ._punchcard({width: 600})
 
@@ -224,7 +266,7 @@ s("bd hh sn hh!8")
     ply(4)
 )
 .distort(3)
-// .gain(mouseX.range(0, 1.0))
+// .gain(machines_en * mouseX.range(0, 1.0))
 ,
 
 // A slowly growing bassy feeling
@@ -234,9 +276,10 @@ s("supersaw")
   // .lpf(mouseX.range(0, 4000))
   // .lpf(time)
   .distort(3)
-  // .gain(mouseY.range(0, 2.0))
+  // .gain(machines_en * mouseY.range(0, 2.0))
 )
-.gain(mouseX.range(0, 1.0))
+.gain(machines_en)
+// .gain(machines_en * mouseX.range(0, 1.0))
 
 _DRONE01:
 // A long, resonant drone
@@ -245,8 +288,8 @@ s("supersaw")
   .rel(8)
   // Adds a deep, resonant reverb
   .room(1).roomsize(10)
-.gain(0.6)
-.gain(mouseX.range(0, .6))
+.gain(0.6 * drone01_en)
+.gain(drone01_en * mouseX.range(0, .6))
 
 _ROBOT:
 stack(
@@ -258,15 +301,17 @@ stack(
 )
 .distort(5)
 .lpf(3000)
-.gain(mouseX.range(0, 0.1))
-// .gain(0.1)
+// .gain(robot_en * mouseX.range(0, 0.1))
+// .gain(0.1 * robot_en)
 
-
+//
+// In the forge
+//
 _HAMMER_ANVIL:
-// s("anvil:00").struct("[x ~ ~ ~]").rev()
-s("anvil:00").struct("[~ x x x]")
+s("anvil:00").struct("[x ~ ~ ~]").rev()
+// s("anvil:00").struct("[~ x x x]")
 // .sometimesBy(.25, ply(2))
-.gain(3)
+.gain(2*anvil_en)
 .loop(1)
 .room(1.5)
 
@@ -274,13 +319,13 @@ _HAMMERx2_ANVIL:
 s("anvil:01").fit()
 .loop(1)
 .slow(2)
-.gain(2)
+.gain(2*anvilx2_en)
 
 _METAL_GRINDER:
 s("metalgrinder:00").struct("[~ x x x]")
 .loop(1)
 .distort(6)
-.gain(0.1)
+.gain(0.1*metal_grinder_en)
 .lpf(5000)
 .room(1.5)
 
@@ -288,10 +333,13 @@ _METAL_GRINDER_FULL:
 s("metalgrinder:00")
 .loop(1)
 .distort(6)
-.gain(0.05)
+.gain(0.05*metal_grinder_full_en)
 .lpf(5000)
 .room(1.5).roomsize(5)
 
+//
+// Some electric sounds
+//
 _TELEGRAPH_SOS:
 note("[[80 80] [80 ~] ~ 80] [80 80 ~ [80 80]] [[80 ~] ~ ~ ~]")
   .s("triangle")
@@ -300,7 +348,8 @@ note("[[80 80] [80 ~] ~ 80] [80 80 ~ [80 80]] [[80 ~] ~ ~ ~]")
   .slow(4)
   .distort(2)
   .room(1).roomsize(7)
-// .gain(mouseX.range(0, 1))
+// .gain(telegraph_en*mouseX.range(0, 1))
+// .gain(telegraph_en)
 
 //
 // Atmospheric effects
@@ -322,16 +371,22 @@ stack(
     // A massive reverb to simulate a long, echoing rumble
     .room(1).roomsize(20)
 )
+.gain(thunder_en)
 .rel(9)
 .beat(2, 32)
 .slow(8)
 
 
+//
+// General config
+//
+
+// Graphs
 all(x => 
   x.postgain(slider(0.17,0,1))
    //._spectrum({width: 600})
    //._punchcard()
-   //.punchcard()
+   .punchcard()
    //._scope({width: 600})
 )
   
