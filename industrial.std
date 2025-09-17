@@ -13,7 +13,7 @@ samples('github:switchangel/pad')
 // Degrade (~Enable)
 //
 const kick_en = slider(1, 0, 1, 1)
-const rumble_en = slider(0, 0, 1, 1)
+const rumble_en = slider(1, 0, 1, 1)
 const rev_sweep_en = slider(1, 0, 1, 1)
 const sd_en = slider(1, 0, 1, 1)
 const hh_en = slider(1, 0, 1, 1)
@@ -25,20 +25,22 @@ const arpeggio_en = slider(1, 0, 1, 1)
 const machines_en = slider(1, 0, 1, 1)
 const drone01_en = slider(1, 0, 1, 1)
 const robot_en = slider(1, 0, 1, 1)
-const anvil_en = slider(0, 0, 1, 1)
-const anvilx2_en = slider(0, 0, 1, 1)
+const anvil_en = slider(1, 0, 1, 1)
+const anvilx2_en = slider(1, 0, 1, 1)
 const metal_grinder_en = slider(1, 0, 1, 1)
 const metal_grinder_full_en = slider(1, 0, 1, 1)
 const telegraph_en = slider(1, 0, 1, 1)
 const thunder_en = slider(1, 0, 1, 1)
 const sine_en = slider(1, 0, 1, 1)
+const reversed_reverb_en = slider(1, 0, 1, 1)
+const sample_reversed_reverb_en = slider(1, 0, 1, 1)
 
 //
 // Sliders
 //
 
 // BPM
-const BPM_SLIDER = slider(154, 140, 172, 1)
+const BPM_SLIDER = slider(152, 140, 172, 1)
 // RUMBLE
 const RUMBLE_DISTORTION_SLIDER = slider(0, 0, 10.0, .5)
 
@@ -302,12 +304,12 @@ ROBOT:
 stack(
     // A short FM sound for the initial attack and high-frequency content
     s("sine")
-    .gain(.8 * robot_en).fm(8).fmh(0.5).rel(0.01)
+    .gain(.8).fm(8).fmh(0.5).rel(0.01)
     ,
 
     // A slightly longer FM sound for the metallic ring
     s("sine")
-    .fm(12).fmh(0.8).rel(0.2).gain(robot_en)
+    .fm(12).fmh(0.8).rel(0.2)
 )
 .degradeBy(robot_en)
 // .gain(robot_en * mouseX.range(0, 0.1))
@@ -341,8 +343,9 @@ s("metalgrinder:00").struct("[~ x x x]")
 .lpf(5000)
 .room(1.5)
 
-_METAL_GRINDER_FULL:
+METAL_GRINDER_FULL:
 s("metalgrinder:00")
+.gain(0.05)
 .degradeBy(metal_grinder_full_en)
 .loop(1)
 .distort(6)
@@ -364,6 +367,28 @@ note("[[80 80] [80 ~] ~ 80] [80 80 ~ [80 80]] [[80 ~] ~ ~ ~]")
 .degradeBy(telegraph_en)
 
 //
+// Reversed reverb
+//
+REVERSED_REVERB:
+stack(
+// Creates a long, spacious clap sound
+  s("clap").room(10).roomsize(10)
+    // The main pattern that reverses the reverb
+    .gain(n("<0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.7 0.9 1>").slow(8))
+    // A sudden drop in gain to simulate the end of the reverse effect
+    .rel(0.01)
+)
+.degradeBy(reversed_reverb_en)
+.distort(1)
+.slow(8)
+
+REVERSED_REVERB:
+s("reversed_clap:00")
+.degradeBy(sample_reversed_reverb_en)
+.loop(1)
+.room(1.5)
+
+//
 // Atmospheric effects
 //
 // A thunderclap with a long, rumbling decay
@@ -380,6 +405,8 @@ stack(
     .rel(10)
     // Add distortion to make it sound aggressive and gritty
     .distort(3.0, 0.5)
+    // A pitch envelope that rises with the gain
+    .detune(n("<-0.25 -0.2 -0.15 -0.1 -0.05 0>"))
     // A massive reverb to simulate a long, echoing rumble
     .room(1).roomsize(20)
 )
