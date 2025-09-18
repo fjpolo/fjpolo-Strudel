@@ -230,7 +230,8 @@ stack(
     .slow(2)
     .fm(1.5).fmh(.2)
 )
-.degradeBy(1.5 * fg_en)
+.gain(2)
+.degradeBy(fg_en)
 //.gain(fg_en * mouseX.range(0, 1.5))
 
 //
@@ -313,7 +314,8 @@ stack(
 )
 .degradeBy(robot_en)
 // .gain(robot_en * mouseX.range(0, 0.1))
-// .distort(5)
+.gain(.1)
+.distort(5)
 // .lpf(3000)
 
 //
@@ -383,10 +385,11 @@ stack(
 .slow(8)
 
 REVERSED_REVERB:
-s("reversed_clap:00")
+s("reversedclap:00")
 .degradeBy(sample_reversed_reverb_en)
-.loop(1)
+.slow(4)
 .room(1.5)
+.gain(5)
 
 //
 // Atmospheric effects
