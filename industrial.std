@@ -3,7 +3,7 @@
 //
 // Samples
 //
-samples('github:fjpolo/fjpolo-Strudel')
+samples('github:fjpolo/fJpolo-Strudel')
 samples('github:algorave-dave/samples')
 samples('github:tidalcycles/dirt-samples')
 samples('github:switchangel/breaks')
@@ -12,14 +12,14 @@ samples('github:switchangel/pad')
 //
 // Degrade (~Enable)
 //
-const kick_en = slider(1, 0, 1, 1)
-const rumble_en = slider(1, 0, 1, 1)
+const kick_en = slider(0, 0, 1, 1)
+const rumble_en = slider(0, 0, 1, 1)
 const rev_sweep_en = slider(1, 0, 1, 1)
 const sd_en = slider(1, 0, 1, 1)
 const hh_en = slider(1, 0, 1, 1)
 const deepbass_en = slider(1, 0, 1, 1)
 const melody_en = slider(1, 0, 1, 1)
-const fg_en = slider(1, 0, 1, 1)
+const fg_en = slider(0, 0, 1, 1)
 const inf_en = slider(1, 0, 1, 1)
 const arpeggio_en = slider(1, 0, 1, 1)
 const machines_en = slider(1, 0, 1, 1)
@@ -28,7 +28,7 @@ const robot_en = slider(1, 0, 1, 1)
 const anvil_en = slider(1, 0, 1, 1)
 const anvilx2_en = slider(1, 0, 1, 1)
 const metal_grinder_en = slider(1, 0, 1, 1)
-const metal_grinder_full_en = slider(1, 0, 1, 1)
+const metal_grinder_full_en = slider(0, 0, 1, 1)
 const telegraph_en = slider(1, 0, 1, 1)
 const thunder_en = slider(1, 0, 1, 1)
 const sine_en = slider(1, 0, 1, 1)
@@ -42,7 +42,7 @@ const sample_reversed_reverb_en = slider(1, 0, 1, 1)
 // BPM
 const BPM_SLIDER = slider(152, 140, 172, 1)
 // RUMBLE
-const RUMBLE_DISTORTION_SLIDER = slider(0, 0, 10.0, .5)
+const RUMBLE_DISTORTION_SLIDER = slider(5, 0, 10.0, .5)
 
 //
 // Set tempo
