@@ -13,7 +13,7 @@ samples('github:switchangel/pad')
 // Degrade (~Enable)
 //
 const kick_en = slider(0, 0, 1, 1)
-const flat_kick_en = slider(1, 0, 1, 1)
+const flat_kick_en = slider(0, 0, 1, 1)
 const rumble_en = slider(1, 0, 1, 1)
 const rev_sweep_en = slider(1, 0, 1, 1)
 const sd_en = slider(1, 0, 1, 1)
@@ -42,6 +42,8 @@ const sample_reversed_reverb_en = slider(1, 0, 1, 1)
 
 // BPM
 const BPM_SLIDER = slider(152, 140, 172, 1)
+// DRUM MACHINE
+const DRUM_MACHINE_IX = slider(0,0,9,1)
 // KICK-BASS BEAT
 const KICK_BASS_BEAT_IX = slider(1, 0, 1, 1)
 // RUMBLE
@@ -64,6 +66,18 @@ const RISER_DISTORTION = slider(3, 0, 11, .5)
 // 
 // KICK-BASS structures
 //
+const drum_machine_structure = [
+ "rolandtr909",
+ "emusp12",
+ "simmonssds5",
+ "linndrum",
+ "rolandtr808",
+ "sequentialcircuitstom",
+ "oberheimdmx",
+ "alesissr16",
+ "rolandtr606",
+ "xdrumlm8953"
+]
 const kick_structures = [
   "[x!4]",
   "<[x!4] [x!3 [x!2]]>"
@@ -109,7 +123,7 @@ FLAT_KICK:
 s("bd").struct(pick(kick_structures, KICK_BASS_BEAT_IX))
 .degradeBy(flat_kick_en)
 // .bank("RolandTR909, bossdr220, korgt3")
-.bank("korgt3")
+.bank(pick(drum_machine_structure, DRUM_MACHINE_IX))
 .speed(1)
 .orbit(0)
 .lpf(500)
@@ -196,8 +210,8 @@ HIHAT:
     // s("[hh]").struct("x*8")
   )
   .orbit(3)
-  .bank("RolandTR909")
 )
+  .bank("RolandTR909")
 .degradeBy(hh_en)
 .distort(2)
 //.delay(2)
