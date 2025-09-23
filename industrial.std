@@ -12,12 +12,12 @@ samples('github:switchangel/pad')
 //
 // Degrade (~Enable)
 //
-const kick_en = slider(1, 0, 1, 1)
+const kick_en = slider(0, 0, 1, 1)
 const rumble_en = slider(1, 0, 1, 1)
 const rev_sweep_en = slider(1, 0, 1, 1)
-const sd_en = slider(1, 0, 1, 1)
-const hh_en = slider(1, 0, 1, 1)
-const deepbass_en = slider(1, 0, 1, 1)
+const sd_en = slider(0, 0, 1, 1)
+const hh_en = slider(0, 0, 1, 1)
+const deepbass_en = slider(0, 0, 1, 1)
 const melody_en = slider(1, 0, 1, 1)
 const fg_en = slider(1, 0, 1, 1)
 const inf_en = slider(1, 0, 1, 1)
@@ -44,12 +44,22 @@ const BPM_SLIDER = slider(152, 140, 172, 1)
 // RUMBLE
 const RUMBLE_DISTORTION_SLIDER = slider(5, 0, 10.0, .5)
 // SNARE BEAT
-const snare_beat_ix = slider(1, 0, 3, 1)
+const SNARE_BEAT_IX = slider(1, 0, 3, 1)
+// BASS DISTORTIO
+const BASS_DISTORTION = slider(3, 0, 11, .5)
+// BASS LPF
+const BASS_LPF = slider(150, 0, 1000, 5)
+// BASS ENVELOPE
+const BASS_ENVELOPE = slider(5,0,8, 0.5)
+const BASS_LPQ = slider(12,0,20, 0.5)
+// BASS REVERB
+const BASS_REVERB = slider(1, 0, 10, .1)
+const BASS_REVERB_ROOM_SIZE = slider(11, 0, 15, .5)
 
 //
 // Set tempo
 //
-setCps(140/60/4)
+setCps(148/60/4)
 
 //
 // Set key
@@ -132,7 +142,7 @@ const snare_structures = [
                          ]
 SNARE:
 stack(
-  s("sd").struct(pick(snare_structures, snare_beat_ix))
+  s("sd").struct(pick(snare_structures, SNARE_BEAT_IX))
   .bank("RolandTR909")
 )
 .degradeBy(sd_en)
@@ -167,15 +177,15 @@ DEEPBASS:
 stack(
   // note("[e0 ~ e0 f0]")
   note("[e0] [f0]")
-      .distort("3:0.3")
+      .distort(BASS_DISTORTION)
       .s("supersaw")
-        .lpf(100)
-        .lpenv(slider(0,0,8))
+        .lpf(BASS_LPF)
+        .lpenv(BASS_ENVELOPE)
         // .lpenv(mouseX.segment(4).range(0, 12))
-        .lpq(12)
+        .lpq(BASS_LPQ)
         .orbit(4)
-        .room(1)
-          .roomsize(11)
+        .room(BASS_REVERB)
+          .roomsize(BASS_REVERB_ROOM_SIZE)
 )
 //.duck(0).duckattack(.5).duckdepth(.5)
 .degradeBy(deepbass_en)
@@ -253,7 +263,7 @@ stack(
     .dec(0.1)
     .fm(time).fmh(time)
 )
-.degradeBy(1.2 * inf_en)
+.degradeBy(inf_en)
 // .gain(inf_en * mouseX.range(0, 1.2))
 
 //
