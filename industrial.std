@@ -93,13 +93,14 @@ FLAT_KICK:
 // -- Kick --
 s("[bd!4] [bd!3 [bd!2]]").slow(2)
 .degradeBy(flat_kick_en)
-.bank("RolandTR909")
+// .bank("RolandTR909, bossdr220, korgt3")
+.bank("korgt3")
 .speed(1)
 .orbit(0)
 .lpf(500)
-.hpf(80)
-.gain(3)
-.postgain(5)
+.hpf(120)
+.gain(9)
+.postgain(10)
 .distort(3)
 .room(1.1)
 
