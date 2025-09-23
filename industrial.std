@@ -15,9 +15,9 @@ samples('github:switchangel/pad')
 const kick_en = slider(0, 0, 1, 1)
 const rumble_en = slider(1, 0, 1, 1)
 const rev_sweep_en = slider(1, 0, 1, 1)
-const sd_en = slider(0, 0, 1, 1)
-const hh_en = slider(0, 0, 1, 1)
-const deepbass_en = slider(0, 0, 1, 1)
+const sd_en = slider(1, 0, 1, 1)
+const hh_en = slider(1, 0, 1, 1)
+const deepbass_en = slider(1, 0, 1, 1)
 const melody_en = slider(1, 0, 1, 1)
 const fg_en = slider(1, 0, 1, 1)
 const inf_en = slider(1, 0, 1, 1)
@@ -25,8 +25,8 @@ const arpeggio_en = slider(1, 0, 1, 1)
 const machines_en = slider(1, 0, 1, 1)
 const drone01_en = slider(1, 0, 1, 1)
 const robot_en = slider(1, 0, 1, 1)
-const anvil_en = slider(1, 0, 1, 1)
-const anvilx2_en = slider(1, 0, 1, 1)
+const anvil_en = slider(0, 0, 1, 1)
+const anvilx2_en = slider(0, 0, 1, 1)
 const metal_grinder_en = slider(1, 0, 1, 1)
 const metal_grinder_full_en = slider(1, 0, 1, 1)
 const telegraph_en = slider(1, 0, 1, 1)
@@ -42,7 +42,7 @@ const sample_reversed_reverb_en = slider(1, 0, 1, 1)
 // BPM
 const BPM_SLIDER = slider(152, 140, 172, 1)
 // RUMBLE
-const RUMBLE_DISTORTION_SLIDER = slider(5, 0, 10.0, .5)
+const RUMBLE_DISTORTION_SLIDER = slider(2.5, 0, 10.0, .5)
 // SNARE BEAT
 const SNARE_BEAT_IX = slider(1, 0, 3, 1)
 // BASS DISTORTIO
@@ -75,7 +75,7 @@ let bg_key = "e:phrygian"
 //
 KICK:
 // -- Kick --
-s("bd!4")
+s("[bd!4] [bd!3 [bd!2]]").slow(2)
 .degradeBy(kick_en)
 // .bank("RolandTR909")
 // .sometimesBy(0.15, ply(2))
