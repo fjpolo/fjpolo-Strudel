@@ -12,13 +12,13 @@ samples('github:switchangel/pad')
 //
 // Degrade (~Enable)
 //
-const kick_en = slider(1, 0, 1, 1)
+const kick_en = slider(0, 0, 1, 1)
 const flat_kick_en = slider(1, 0, 1, 1)
 const rumble_en = slider(1, 0, 1, 1)
 const rev_sweep_en = slider(1, 0, 1, 1)
 const sd_en = slider(1, 0, 1, 1)
 const hh_en = slider(1, 0, 1, 1)
-const deepbass_en = slider(1, 0, 1, 1)
+const deepbass_en = slider(0, 0, 1, 1)
 const melody_en = slider(1, 0, 1, 1)
 const fg_en = slider(1, 0, 1, 1)
 const inf_en = slider(1, 0, 1, 1)
@@ -42,6 +42,8 @@ const sample_reversed_reverb_en = slider(1, 0, 1, 1)
 
 // BPM
 const BPM_SLIDER = slider(152, 140, 172, 1)
+// KICK-BASS BEAT
+const KICK_BASS_BEAT_IX = slider(1, 0, 1, 1)
 // RUMBLE
 const RUMBLE_DISTORTION_SLIDER = slider(0, 0, 10.0, .5)
 // SNARE BEAT
@@ -58,6 +60,18 @@ const BASS_REVERB = slider(1, 0, 10, .1)
 const BASS_REVERB_ROOM_SIZE = slider(11, 0, 15, .5)
 // INFINITE RISER DISTORTION
 const RISER_DISTORTION = slider(3, 0, 11, .5)
+
+// 
+// KICK-BASS structures
+//
+const kick_structures = [
+  "[x!4]",
+  "<[x!4] [x!3 [x!2]]>"
+]
+const bass_structures = [
+  "[e0!2 f0!2]",
+  "<[e0!2 f0!2] [e0!2 f0 [f0!2]]>"
+]
 
 //
 // Set tempo
@@ -78,7 +92,7 @@ let bg_key = "e:phrygian"
 //
 KICK:
 // -- Kick --
-s("[bd!4] [bd!3 [bd!2]]").slow(2)
+s("bd").struct(pick(kick_structures, KICK_BASS_BEAT_IX))
 .degradeBy(kick_en)
 // .bank("RolandTR808")
 // .sometimesBy(0.15, ply(2))
@@ -92,7 +106,7 @@ s("[bd!4] [bd!3 [bd!2]]").slow(2)
 
 FLAT_KICK:
 // -- Kick --
-s("[bd!4] [bd!3 [bd!2]]").slow(2)
+s("bd").struct(pick(kick_structures, KICK_BASS_BEAT_IX))
 .degradeBy(flat_kick_en)
 // .bank("RolandTR909, bossdr220, korgt3")
 .bank("korgt3")
@@ -193,10 +207,7 @@ HIHAT:
 //
 DEEPBASS:
 stack(
-  // note("[e0 ~ e0 f0]")
-  // note("[e0] [f0]").seg(16).slow(4)
-  // note("[e0] [f0]").seg(4)
-  note("[e0!2 f0!2] [e0!2 f0 [f0!2]]").slow(2)
+  note(pick(bass_structures, KICK_BASS_BEAT_IX))
 
       .distort(BASS_DISTORTION)
       .s("supersaw")
