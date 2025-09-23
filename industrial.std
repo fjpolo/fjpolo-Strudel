@@ -12,13 +12,13 @@ samples('github:switchangel/pad')
 //
 // Degrade (~Enable)
 //
-const kick_en = slider(0, 0, 1, 1)
-const flat_kick_en = slider(0, 0, 1, 1)
+const kick_en = slider(1, 0, 1, 1)
+const flat_kick_en = slider(1, 0, 1, 1)
 const rumble_en = slider(1, 0, 1, 1)
 const rev_sweep_en = slider(1, 0, 1, 1)
 const sd_en = slider(1, 0, 1, 1)
 const hh_en = slider(1, 0, 1, 1)
-const deepbass_en = slider(0, 0, 1, 1)
+const deepbass_en = slider(1, 0, 1, 1)
 const melody_en = slider(1, 0, 1, 1)
 const fg_en = slider(1, 0, 1, 1)
 const inf_en = slider(1, 0, 1, 1)
@@ -195,7 +195,9 @@ DEEPBASS:
 stack(
   // note("[e0 ~ e0 f0]")
   // note("[e0] [f0]").seg(16).slow(4)
-  note("[e0] [f0]").seg(4)
+  // note("[e0] [f0]").seg(4)
+  note("[e0!2 f0!2] [e0!2 f0 [f0!2]]").slow(2)
+
       .distort(BASS_DISTORTION)
       .s("supersaw")
         .lpf(BASS_LPF)
