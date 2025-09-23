@@ -12,7 +12,7 @@ samples('github:switchangel/pad')
 //
 // Degrade (~Enable)
 //
-const kick_en = slider(0, 0, 1, 1)
+const kick_en = slider(1, 0, 1, 1)
 const rumble_en = slider(1, 0, 1, 1)
 const rev_sweep_en = slider(1, 0, 1, 1)
 const sd_en = slider(1, 0, 1, 1)
@@ -25,8 +25,8 @@ const arpeggio_en = slider(1, 0, 1, 1)
 const machines_en = slider(1, 0, 1, 1)
 const drone01_en = slider(1, 0, 1, 1)
 const robot_en = slider(1, 0, 1, 1)
-const anvil_en = slider(0, 0, 1, 1)
-const anvilx2_en = slider(0, 0, 1, 1)
+const anvil_en = slider(1, 0, 1, 1)
+const anvilx2_en = slider(1, 0, 1, 1)
 const metal_grinder_en = slider(1, 0, 1, 1)
 const metal_grinder_full_en = slider(1, 0, 1, 1)
 const telegraph_en = slider(1, 0, 1, 1)
@@ -111,7 +111,6 @@ REVERSE_SWEEP:
 //
 RUMBLE:
 stack(
-  s("[bd!4]").gain(rumble_en),
   // -- Rumble - Low
   s("[bd!4]")
     .lpf(200)
