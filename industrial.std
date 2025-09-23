@@ -13,6 +13,7 @@ samples('github:switchangel/pad')
 // Degrade (~Enable)
 //
 const kick_en = slider(1, 0, 1, 1)
+const flat_kick_en = slider(1, 0, 1, 1)
 const rumble_en = slider(1, 0, 1, 1)
 const rev_sweep_en = slider(1, 0, 1, 1)
 const sd_en = slider(1, 0, 1, 1)
@@ -20,7 +21,7 @@ const hh_en = slider(1, 0, 1, 1)
 const deepbass_en = slider(1, 0, 1, 1)
 const melody_en = slider(1, 0, 1, 1)
 const fg_en = slider(1, 0, 1, 1)
-const inf_en = slider(0, 0, 1, 1)
+const inf_en = slider(1, 0, 1, 1)
 const arpeggio_en = slider(1, 0, 1, 1)
 const machines_en = slider(1, 0, 1, 1)
 const drone01_en = slider(1, 0, 1, 1)
@@ -42,7 +43,7 @@ const sample_reversed_reverb_en = slider(1, 0, 1, 1)
 // BPM
 const BPM_SLIDER = slider(152, 140, 172, 1)
 // RUMBLE
-const RUMBLE_DISTORTION_SLIDER = slider(2.5, 0, 10.0, .5)
+const RUMBLE_DISTORTION_SLIDER = slider(0, 0, 10.0, .5)
 // SNARE BEAT
 const SNARE_BEAT_IX = slider(1, 0, 3, 1)
 // BASS DISTORTIO
@@ -79,7 +80,7 @@ KICK:
 // -- Kick --
 s("[bd!4] [bd!3 [bd!2]]").slow(2)
 .degradeBy(kick_en)
-// .bank("RolandTR909")
+// .bank("RolandTR808")
 // .sometimesBy(0.15, ply(2))
 .speed(1)
 .orbit(0)
@@ -87,6 +88,20 @@ s("[bd!4] [bd!3 [bd!2]]").slow(2)
 // .duck("2:3:4").duckattack(.5).duckdepth(1.8)
 //._punchcard()
 // .gain(kick_en * mouseX.range(0, 1))
+
+FLAT_KICK:
+// -- Kick --
+s("[bd!4] [bd!3 [bd!2]]").slow(2)
+.degradeBy(flat_kick_en)
+.bank("RolandTR909")
+.speed(1)
+.orbit(0)
+.lpf(500)
+.hpf(80)
+.gain(3)
+.postgain(5)
+.distort(3)
+.room(1.1)
 
 //
 //Reverse-reverb kick pattern
