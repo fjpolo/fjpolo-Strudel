@@ -20,7 +20,7 @@ const hh_en = slider(1, 0, 1, 1)
 const deepbass_en = slider(1, 0, 1, 1)
 const melody_en = slider(1, 0, 1, 1)
 const fg_en = slider(1, 0, 1, 1)
-const inf_en = slider(1, 0, 1, 1)
+const inf_en = slider(0, 0, 1, 1)
 const arpeggio_en = slider(1, 0, 1, 1)
 const machines_en = slider(1, 0, 1, 1)
 const drone01_en = slider(1, 0, 1, 1)
@@ -55,6 +55,8 @@ const BASS_LPQ = slider(12,0,20, 0.5)
 // BASS REVERB
 const BASS_REVERB = slider(1, 0, 10, .1)
 const BASS_REVERB_ROOM_SIZE = slider(11, 0, 15, .5)
+// INFINITE RISER DISTORTION
+const RISER_DISTORTION = slider(3, 0, 11, .5)
 
 //
 // Set tempo
@@ -263,6 +265,7 @@ stack(
     .fm(time).fmh(time)
 )
 .degradeBy(inf_en)
+.distort(RISER_DISTORTION)
 // .gain(inf_en * mouseX.range(0, 1.2))
 
 //
