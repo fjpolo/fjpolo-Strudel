@@ -44,8 +44,10 @@ const sample_reversed_reverb_en = slider(1, 0, 1, 1)
 const BPM_SLIDER = slider(152, 140, 172, 1)
 // DRUM MACHINE
 const DRUM_MACHINE_IX = slider(0,0,9,1)
+// BASS TYPE
+const BASS_TYPE_IX = slider(1,0,9,1)
 // KICK-BASS BEAT
-const KICK_BASS_BEAT_IX = slider(1, 0, 1, 1)
+const KICK_BASS_BEAT_IX = slider(0, 0, 1, 1)
 // RUMBLE
 const RUMBLE_DISTORTION_SLIDER = slider(0, 0, 10.0, .5)
 // SNARE BEAT
@@ -77,6 +79,18 @@ const drum_machine_structure = [
  "alesissr16",
  "rolandtr606",
  "xdrumlm8953"
+]
+const bass_type_structure = [
+  "808",
+  "industrial",
+  "moog",
+  "fm",
+  "dist",
+  "sid",
+  "juno",
+  "subroc3d",
+  "sequential",
+  "glitch"
 ]
 const kick_structures = [
   "[x!4]",
@@ -224,7 +238,7 @@ stack(
   note(pick(bass_structures, KICK_BASS_BEAT_IX))
 
       .distort(BASS_DISTORTION)
-      .s("supersaw")
+      .s(pick(bass_type_structure, BASS_TYPE_IX))
         .lpf(BASS_LPF)
         .lpenv(BASS_ENVELOPE)
         // .lpenv(mouseX.segment(4).range(0, 12))
