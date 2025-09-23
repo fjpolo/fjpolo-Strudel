@@ -12,13 +12,13 @@ samples('github:switchangel/pad')
 //
 // Degrade (~Enable)
 //
-const kick_en = slider(1, 0, 1, 1)
-const flat_kick_en = slider(1, 0, 1, 1)
+const kick_en = slider(0, 0, 1, 1)
+const flat_kick_en = slider(0, 0, 1, 1)
 const rumble_en = slider(1, 0, 1, 1)
 const rev_sweep_en = slider(1, 0, 1, 1)
 const sd_en = slider(1, 0, 1, 1)
 const hh_en = slider(1, 0, 1, 1)
-const deepbass_en = slider(1, 0, 1, 1)
+const deepbass_en = slider(0, 0, 1, 1)
 const melody_en = slider(1, 0, 1, 1)
 const fg_en = slider(1, 0, 1, 1)
 const inf_en = slider(1, 0, 1, 1)
@@ -51,8 +51,8 @@ const BASS_DISTORTION = slider(3, 0, 11, .5)
 // BASS LPF
 const BASS_LPF = slider(150, 0, 1000, 5)
 // BASS ENVELOPE
-const BASS_ENVELOPE = slider(5,0,8, 0.5)
-const BASS_LPQ = slider(12,0,20, 0.5)
+const BASS_ENVELOPE = slider(2,0,8, 0.5)
+const BASS_LPQ = slider(9,0,20, 0.5)
 // BASS REVERB
 const BASS_REVERB = slider(1, 0, 10, .1)
 const BASS_REVERB_ROOM_SIZE = slider(11, 0, 15, .5)
@@ -62,7 +62,7 @@ const RISER_DISTORTION = slider(3, 0, 11, .5)
 //
 // Set tempo
 //
-setCps(148/60/4)
+setCps(152/60/4)
 
 //
 // Set key
@@ -86,6 +86,7 @@ s("[bd!4] [bd!3 [bd!2]]").slow(2)
 .orbit(0)
 .distort("2, .7")
 // .duck("2:3:4").duckattack(.5).duckdepth(1.8)
+// .duck(4).duckattack(.2).duckdepth(.2)
 //._punchcard()
 // .gain(kick_en * mouseX.range(0, 1))
 
@@ -193,7 +194,8 @@ HIHAT:
 DEEPBASS:
 stack(
   // note("[e0 ~ e0 f0]")
-  note("[e0] [f0]")
+  // note("[e0] [f0]").seg(16).slow(4)
+  note("[e0] [f0]").seg(4)
       .distort(BASS_DISTORTION)
       .s("supersaw")
         .lpf(BASS_LPF)
@@ -202,13 +204,11 @@ stack(
         .lpq(BASS_LPQ)
         .orbit(4)
         .room(BASS_REVERB)
-          .roomsize(BASS_REVERB_ROOM_SIZE)
+        .roomsize(BASS_REVERB_ROOM_SIZE)
 )
 //.duck(0).duckattack(.5).duckdepth(.5)
 .degradeBy(deepbass_en)
 .loop(1)
-.slow(4)
-.seg(16)
 //._punchcard()
 
 //
