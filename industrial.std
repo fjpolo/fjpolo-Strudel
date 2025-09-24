@@ -46,9 +46,9 @@ const BPM_SLIDER = slider(152, 140, 172, 1)
 // DRUM MACHINE
 const DRUM_MACHINE_IX = slider(0,0,9,1)
 // BASS TYPE
-const BASS_TYPE_IX = slider(7,0,9,1)
+const BASS_TYPE_IX = slider(1,0,9,1)
 // KICK-BASS BEAT
-const KICK_BASS_BEAT_IX = slider(0, 0, 3, 1)
+const KICK_BASS_BEAT_IX = slider(2, 0, 5, 1)
 // RUMBLE
 const RUMBLE_DISTORTION_SLIDER = slider(0, 0, 10.0, .5)
 // SNARE BEAT
@@ -94,12 +94,16 @@ const bass_type_structure = [
   "glitch"
 ]
 const kick_structures = [
+  "[x ~ ~ ~]",
+  "<[[x!2] [~ x] x x] [[x!2] [~ x] x ~]>",
   "[x!4]",
   "<[x!4] [x!3 [x!2]]>",
   "<[x!4] [x!3 [x [x!2]]]>",
   "[x!2]!4"
 ]
 const bass_structures = [
+  "[e0 ~ ~ ~]",
+  "<[[f0!2] [~ f0] e0 e0] [[f0!2] [~ f0] e0 ~]>",
   "[f0!2 e0!2]", 
   "<[f0!2 e0!2] [f0!2 e0 [e0!2]]>",
   "<[f0!2 e0!2] [f0!2 e0 [e0 [e0!2]]]>",
@@ -132,7 +136,7 @@ s("bd").struct(pick(kick_structures, KICK_BASS_BEAT_IX))
 .gain("<1.2 0.8 1.1 0.9>").every(2, x=>x.add(0.2))
 .speed(1)
 .orbit(0)
-.distort("2, .7")
+.distort(4)
 // .duck("2:3:4").duckattack(.5).duckdepth(1.8)
 // .duck(4).duckattack(.2).duckdepth(.2)
 //._punchcard()
