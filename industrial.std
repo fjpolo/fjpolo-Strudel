@@ -14,7 +14,7 @@ samples('github:switchangel/pad')
 //
 const kick_en = slider(1, 0, 1, 1)
 const flat_kick_en = slider(1, 0, 1, 1)
-const rumble_en = slider(1, 1, 1, 1)
+const rumble_en = slider(1, 0, 1, 1)
 const rev_sweep_en = slider(1, 0, 1, 1)
 const sd_en = slider(1, 0, 1, 1)
 const hh_en = slider(1, 0, 1, 1)
@@ -100,10 +100,10 @@ const kick_structures = [
   "[x!2]!4"
 ]
 const bass_structures = [
-  "[e0!2 f0!2]", 
-  "<[e0!2 f0!2] [e0!2 f0 [f0!2]]>",
-  "<[e0!2 f0!2] [e0!2 f0 [f0 [f0!2]]]>",
-  "<[[e0!2]!2 [f0!2]!2]>"
+  "[f0!2 e0!2]", 
+  "<[f0!2 e0!2] [f0!2 e0 [e0!2]]>",
+  "<[f0!2 e0!2] [f0!2 e0 [e0 [e0!2]]]>",
+  "<[[f0!2]!2 [e0!2]!2]>"
 ]
 
 //
