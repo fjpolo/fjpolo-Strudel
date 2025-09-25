@@ -13,28 +13,31 @@
 // //   .scrollY([0.1,-0.0625,0.005,0.00001],0)
 // //   .out()
 
+// // await initHydra({detectAudio:true}, {feedStrudel:1})
 // // s0.initCam()
 // // src(s0).color(-1, 1).kaleid().out()
 
+// // await initHydra({detectAudio:true}, {feedStrudel:1})
 // // s0.initCam()
 // // shape().modulate(src(s0)).out()
 
-await initHydra({detectAudio:true}, {feedStrudel:1})
-shape(3)
-  .modulate(src(s0).scale(1.5).rotate(1.5))
-  // Use the low-end of the audio (kick/bass) to control rotation
-  .rotate(
-    () => a.fft[0] * 0.1
-  )
-  // Make the shape's size pulse with the low-end
-  .scale(
-    () => 1.5 + a.fft[0] * 1.5
-  )
-  // Layer an additional noise texture that gets distorted by the mid-range
-  .diff(
-    osc(50, 0.1, () => a.fft[1] * 2).modulate(noise(10, 1.5))
-  )
-  .out()
+// await initHydra({detectAudio:true}, {feedStrudel:1})
+// shape(3)
+//   .modulate(src(s0).scale(1.5).rotate(1.5))
+//   // Use the low-end of the audio (kick/bass) to control rotation
+//   .rotate(
+//     () => a.fft[0] * 0.1
+//   )
+//   // Make the shape's size pulse with the low-end
+//   .scale(
+//     () => 1.5 + a.fft[0] * 1.5
+//   )
+//   // Layer an additional noise texture that gets distorted by the mid-range
+//   .diff(
+//     osc(50, 0.1, () => a.fft[1] * 2).modulate(noise(10, 1.5))
+//   )
+//   .out()
+
 
 //
 // Samples
@@ -50,7 +53,7 @@ samples('github:switchangel/pad')
 //
 const kick_en = slider(0, 0, 1, 1)
 const flat_kick_en = slider(0, 0, 1, 1)
-const rumble_en = slider(1, 0, 1, 1)
+const rumble_en = slider(0, 0, 1, 1)
 const rev_sweep_en = slider(1, 0, 1, 1)
 const sd_en = slider(1, 0, 1, 1)
 const hh_en = slider(0, 0, 1, 1)
@@ -61,6 +64,10 @@ const fg_en = slider(1, 0, 1, 1)
 const inf_en = slider(1, 0, 1, 1)
 const arpeggio_en = slider(1, 0, 1, 1)
 const machines_en = slider(1, 0, 1, 1)
+const dark_drone_en = slider(1, 0, 1, 1)
+const dark_random_en = slider(1, 0, 1, 1)
+const dark_pulse_en = slider(1, 0, 1, 1)
+const dark_thingie_en = slider(1, 0, 1, 1)
 const drone01_en = slider(1, 0, 1, 1)
 const robot_en = slider(1, 0, 1, 1)
 const anvil_en = slider(1, 0, 1, 1)
@@ -78,13 +85,13 @@ const sample_reversed_reverb_en = slider(1, 0, 1, 1)
 //
 
 // BPM
-const BPM_SLIDER = slider(122, 140, 172, 1)
+const BPM_SLIDER = slider(152, 140, 172, 1)
 // DRUM MACHINE
 const DRUM_MACHINE_IX = slider(0,0,9,1)
 // BASS TYPE
-const BASS_TYPE_IX = slider(7,0,9,1)
+const BASS_TYPE_IX = slider(1,0,9,1)
 // KICK-BASS BEAT
-const KICK_BASS_BEAT_IX = slider(2, 0, 5, 1)
+const KICK_BASS_BEAT_IX = slider(1, 0, 5, 1)
 // RUMBLE
 const RUMBLE_DISTORTION_SLIDER = slider(0, 0, 10.0, .5)
 // SNARE BEAT
@@ -429,6 +436,60 @@ stack(
 .degradeBy(machines_en)
 // .gain(machines_en * mouseX.range(0, 1.0))
 
+DARK_DRONE:
+stack(
+  n(0)
+    .scale(bg_key)
+    .s("supersaw")
+    .rel(8)
+    .gain(0.6)
+    .lpf(400)
+    .room(5).roomsize(10)
+)
+.degradeBy(dark_drone_en)
+
+DARK_RANDOM:
+stack(
+  n(
+    irand(8)
+      .seg(8)
+      .add(n(2))
+  )
+    .scale(bg_key)
+    .s("triangle")
+    .fast(2)
+    .lpenv(2)
+    .coarse(8) // This adds a harsh, bitcrushed texture
+    .room(1.2).roomsize(4)
+    .distort(5)
+)
+.degradeBy(dark_random_en)
+.loop(2)
+
+DARK_PULSE:
+stack(
+  n("<0 2 4 6 5>").s("pulse").rel(0.1)
+    .lpf(
+      "<1000 900 800 700 600 500 400 300 200>"
+    )
+    .detune(0.5)
+).fast(16)
+.gain(3)
+.loop(1)
+.degradeBy(dark_pulse_en)
+// ._scope()
+
+DARK_THINGIE:
+stack(
+  s("supersaw").lpf("<1000 800 600 400 200>")
+    .detune(0.5)
+
+)
+.gain(3)
+.loop(1)
+.degradeBy(dark_thingie_en)
+// ._scope()
+
 DRONE01:
 // A long, resonant drone
 s("supersaw")
@@ -479,13 +540,16 @@ METAL_GRINDER:
 s("metalgrinder:00").struct("[~ x x x]")
 .loop(1)
 .distort(6)
+.gain(.02)
+.postgain(.02)
 .degradeBy(metal_grinder_en)
 .lpf(5000)
 .room(1.5)
 
 METAL_GRINDER_FULL:
 s("metalgrinder:00")
-.gain(0.05)
+.gain(0.02)
+.postgain(.02)
 .degradeBy(metal_grinder_full_en)
 .loop(1)
 .distort(6)
