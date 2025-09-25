@@ -1,25 +1,5 @@
 //   @fjpolo
 
-//
-// Visuals
-// 
-// // await initHydra({detectAudio:true}, {feedStrudel:1})
-// // shape(1,1)
-// //   .mult(voronoi(1000,2)
-// //   .blend(o0).luma())
-// //   .add(shape(3,0.125)
-// //        .rotate(1,1).mult(voronoi(1000,1).luma())
-// //        .rotate(1.5)).scrollX([0.1,-0.0625,0.005,0.00001],0)
-// //   .scrollY([0.1,-0.0625,0.005,0.00001],0)
-// //   .out()
-
-// // await initHydra({detectAudio:true}, {feedStrudel:1})
-// // s0.initCam()
-// // src(s0).color(-1, 1).kaleid().out()
-
-// // await initHydra({detectAudio:true}, {feedStrudel:1})
-// // s0.initCam()
-// // shape().modulate(src(s0)).out()
 
 // await initHydra({detectAudio:true}, {feedStrudel:1})
 // shape(3)
@@ -29,7 +9,7 @@
 //     () => a.fft[0] * 0.1
 //   )
 //   // Make the shape's size pulse with the low-end
-//   .scale(
+//   .scale(
 //     () => 1.5 + a.fft[0] * 1.5
 //   )
 //   // Layer an additional noise texture that gets distorted by the mid-range
@@ -37,7 +17,6 @@
 //     osc(50, 0.1, () => a.fft[1] * 2).modulate(noise(10, 1.5))
 //   )
 //   .out()
-
 
 //
 // Samples
@@ -51,7 +30,7 @@ samples('github:switchangel/pad')
 //
 // Degrade (~Enable)
 //
-const kick_en = slider(0, 0, 1, 1)
+const kick_en = slider(1, 0, 1, 1)
 const flat_kick_en = slider(0, 0, 1, 1)
 const rumble_en = slider(0, 0, 1, 1)
 const rev_sweep_en = slider(1, 0, 1, 1)
@@ -67,14 +46,14 @@ const machines_en = slider(1, 0, 1, 1)
 const dark_drone_en = slider(1, 0, 1, 1)
 const dark_random_en = slider(1, 0, 1, 1)
 const dark_pulse_en = slider(1, 0, 1, 1)
-const dark_thingie_en = slider(1, 0, 1, 1)
+const dark_thingie_en = slider(0, 0, 1, 1)
 const drone01_en = slider(1, 0, 1, 1)
 const robot_en = slider(1, 0, 1, 1)
 const anvil_en = slider(1, 0, 1, 1)
 const anvilx2_en = slider(1, 0, 1, 1)
 const metal_grinder_en = slider(1, 0, 1, 1)
 const metal_grinder_full_en = slider(1, 0, 1, 1)
-const telegraph_en = slider(1, 0, 1, 1)
+const telegraph_en = slider(1, 0,10, 1)
 const thunder_en = slider(1, 0, 1, 1)
 const sine_en = slider(1, 0, 1, 1)
 const reversed_reverb_en = slider(1, 0, 1, 1)
@@ -631,7 +610,7 @@ all(x =>
   x.postgain(slider(0.17,0,1))
    //._spectrum({width: 600})
    //._punchcard()
-   // .punchcard()
+   //.punchcard()
    //._scope({width: 600})
 )
 
