@@ -30,13 +30,13 @@ samples('github:switchangel/pad')
 //
 // Degrade (~Enable)
 //
-const kick_en = slider(1, 0, 1, 1)
+const kick_en = slider(0, 0, 1, 1)
 const flat_kick_en = slider(0, 0, 1, 1)
-const rumble_en = slider(0, 0, 1, 1)
+const rumble_en = slider(1, 0, 1, 1)
 const rev_sweep_en = slider(1, 0, 1, 1)
 const sd_en = slider(1, 0, 1, 1)
-const hh_en = slider(0, 0, 1, 1)
-const clap_en = slider(0, 0, 1, 1)
+const hh_en = slider(1, 0, 1, 1)
+const clap_en = slider(1, 0, 1, 1)
 const deepbass_en = slider(0, 0, 1, 1)
 const melody_en = slider(1, 0, 1, 1)
 const fg_en = slider(1, 0, 1, 1)
@@ -46,14 +46,15 @@ const machines_en = slider(1, 0, 1, 1)
 const dark_drone_en = slider(1, 0, 1, 1)
 const dark_random_en = slider(1, 0, 1, 1)
 const dark_pulse_en = slider(1, 0, 1, 1)
-const dark_thingie_en = slider(0, 0, 1, 1)
+const dark_thingie_en = slider(1, 0, 1, 1)
 const drone01_en = slider(1, 0, 1, 1)
 const robot_en = slider(1, 0, 1, 1)
-const anvil_en = slider(0, 0, 1, 1)
-const anvilx2_en = slider(0, 0, 1, 1)
+const anvil_en = slider(1, 0, 1, 1)
+const anvilx2_en = slider(1, 0, 1, 1)
 const metal_grinder_en = slider(1, 0, 1, 1)
 const metal_grinder_full_en = slider(1, 0, 1, 1)
-const telegraph_en = slider(0, 0, 1, 1)
+const train_en = slider(1, 0, 1, 1)
+const telegraph_en = slider(100, 0,10, 1)
 const thunder_en = slider(1, 0, 1, 1)
 const sine_en = slider(1, 0, 1, 1)
 const reversed_reverb_en = slider(1, 0, 1, 1)
@@ -70,7 +71,7 @@ const DRUM_MACHINE_IX = slider(0,0,9,1)
 // BASS TYPE
 const BASS_TYPE_IX = slider(1,0,9,1)
 // KICK-BASS BEAT
-const KICK_BASS_BEAT_IX = slider(1, 0, 5, 1)
+const KICK_BASS_BEAT_IX = slider(0, 0, 5, 1)
 // RUMBLE
 const RUMBLE_DISTORTION_SLIDER = slider(0, 0, 10.0, .5)
 // SNARE BEAT
@@ -80,7 +81,7 @@ const BASS_DISTORTION = slider(3, 0, 11, .5)
 // BASS LPF
 const BASS_LPF = slider(150, 0, 1000, 5)
 // BASS ENVELOPE
-const BASS_ENVELOPE = slider(2,0,8, 0.5)
+const BASS_ENVELOPE = slider(3,0,8, 0.5)
 const BASS_LPQ = slider(9,0,20, 0.5)
 // BASS REVERB
 const BASS_REVERB = slider(1, 0, 10, .1)
@@ -222,7 +223,7 @@ stack(
 .room(5)
 .bank("RolandTR909")
 //._scope({width: 300})
-// .gain(rumble_en * mouseX.range(0, .25))
+// .gain(mouseX.range(0, .25))
 
 //
 // Snare
@@ -453,7 +454,8 @@ stack(
     )
     .detune(0.5)
 ).fast(16)
-.gain(3)
+.gain(12)
+  .postgain(6)
 .loop(1)
 .degradeBy(dark_pulse_en)
 // ._scope()
@@ -464,7 +466,8 @@ stack(
     .detune(0.5)
 
 )
-.gain(3)
+.gain(12)
+.postgain(6)
 .loop(1)
 .degradeBy(dark_thingie_en)
 // ._scope()
@@ -534,6 +537,36 @@ s("metalgrinder:00")
 .distort(6)
 .lpf(5000)
 .room(1.5).roomsize(5)
+
+
+//
+// INTO THE MINES
+//
+TRAIN_BRAKES:
+stack(
+  // 1. The metallic screech and grinding wheels (Noise Source)
+  s("noise")
+    .add(21)
+    .gain(0.8)
+    .lpq(20).lpf(4000) // High resonance/filter for painful screech
+    .distort(15)        // Extreme distortion for the metal grind
+    .room(10).roomsize(10).rel(16) // Massive reverb for the long decay and mine echoes
+  ,
+  // 2. The air brakes and low-end rumble (Engine Source)
+  s("pulse")
+    .add(21)
+    .gain(0.4)
+    .lpf(200).rel(16) // Deep and dark low-pass filter
+)
+// 3. The deceleration effect (The Brake)
+.speed(
+  // The pattern that slowly drops the speed and pitch over 8 beats
+  // This simulates the wheels slowing down and the pitch descending
+  "<.8 .79 .78 .77 .76 .75 .74 .73 .72 .71 .7 .69 .68 .67 .66 .65 .64 .63 .62 .61 .6 .59 .58 .57 .56 .55 .54 .53 .52 .51 .5 .45 .4 0.2 0.1 0.05 0.01 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0>"
+)
+.degradeBy(train_en)
+.fast(8)
+._scope()
 
 //
 // Some electric sounds
