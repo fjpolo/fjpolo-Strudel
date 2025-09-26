@@ -1,23 +1,5 @@
 //   @fjpolo
 
-
-// await initHydra({detectAudio:true}, {feedStrudel:1})
-// shape(3)
-//   .modulate(src(s0).scale(1.5).rotate(1.5))
-//   // Use the low-end of the audio (kick/bass) to control rotation
-//   .rotate(
-//     () => a.fft[0] * 0.1
-//   )
-//   // Make the shape's size pulse with the low-end
-//   .scale(
-//     () => 1.5 + a.fft[0] * 1.5
-//   )
-//   // Layer an additional noise texture that gets distorted by the mid-range
-//   .diff(
-//     osc(50, 0.1, () => a.fft[1] * 2).modulate(noise(10, 1.5))
-//   )
-//   .out()
-
 //
 // Samples
 //
@@ -49,10 +31,11 @@ const dark_pulse_en = slider(1, 0, 1, 1)
 const dark_thingie_en = slider(1, 0, 1, 1)
 const drone01_en = slider(1, 0, 1, 1)
 const robot_en = slider(1, 0, 1, 1)
-const anvil_en = slider(1, 0, 1, 1)
-const anvilx2_en = slider(1, 0, 1, 1)
+const anvil_en = slider(0, 0, 1, 1)
+const anvilx2_en = slider(0, 0, 1, 1)
 const metal_grinder_en = slider(1, 0, 1, 1)
 const metal_grinder_full_en = slider(1, 0, 1, 1)
+const shackles_en = slider(0, 0, 1, 1)
 const train_en = slider(1, 0, 1, 1)
 const telegraph_en = slider(100, 0,10, 1)
 const thunder_en = slider(1, 0, 1, 1)
@@ -71,7 +54,7 @@ const DRUM_MACHINE_IX = slider(0,0,9,1)
 // BASS TYPE
 const BASS_TYPE_IX = slider(1,0,9,1)
 // KICK-BASS BEAT
-const KICK_BASS_BEAT_IX = slider(0, 0, 5, 1)
+const KICK_BASS_BEAT_IX = slider(1, 0, 5, 1)
 // RUMBLE
 const RUMBLE_DISTORTION_SLIDER = slider(0, 0, 10.0, .5)
 // SNARE BEAT
@@ -538,11 +521,20 @@ s("metalgrinder:00")
 .lpf(5000)
 .room(1.5).roomsize(5)
 
+SHACKLES:
+s("chains:00")
+// .gain(3)
+// .room(1.2)
+// .roomsize(5)
+.loop(1)
+.degradeBy(shackles_en)
+// ._scope()
+._spectrum()
 
 //
 // INTO THE MINES
 //
-TRAIN_BRAKES:
+_TRAIN_BRAKES:
 stack(
   // 1. The metallic screech and grinding wheels (Noise Source)
   s("noise")
